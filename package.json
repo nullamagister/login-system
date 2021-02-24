@@ -1,12 +1,13 @@
 {
   "name": "login-system",
   "version": "1.0.0",
-  "description": "A simple system for website registeration and login",
+  "description": "A simple system for website account registration and login",
   "main": "release/app.js",
   "scripts": {
     "build": "tsc",
     "serve": "tsc && node release/app.js",
-    "test": "jest ./src/test"
+    "test": "jest --coverage ./src/test",
+    "watch": "nodemon release/app.js"
   },
   "repository": {
     "type": "git",

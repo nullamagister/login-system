@@ -1,5 +1,5 @@
 # Login System
-A simple system for website registeration and login
+A simple system for website account registration and login
 
 ## Back-end:
 1. Javascript & Typescript
