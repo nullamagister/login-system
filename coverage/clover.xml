@@ -1,6 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1614161480102" clover="3.2.0">
-  <project timestamp="1614161480102" name="All files">
-    <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0" elements="0" coveredelements="0" complexity="0" loc="0" ncloc="0" packages="0" files="0" classes="0"/>
+<coverage generated="1614186580267" clover="3.2.0">
+  <project timestamp="1614186580267" name="All files">
+    <metrics statements="31" coveredstatements="17" conditionals="6" coveredconditionals="3" methods="12" coveredmethods="7" elements="49" coveredelements="27" complexity="0" loc="31" ncloc="31" packages="1" files="2" classes="2"/>
+    <file name="ISystem.ts" path="/home/samo/login-system/src/controller/ISystem.ts">
+      <metrics statements="3" coveredstatements="3" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
+      <line num="60" count="1" type="cond" truecount="2" falsecount="0"/>
+      <line num="61" count="1" type="stmt"/>
+      <line num="62" count="1" type="stmt"/>
+    </file>
+    <file name="Validate.ts" path="/home/samo/login-system/src/controller/Validate.ts">
+      <metrics statements="28" coveredstatements="14" conditionals="4" coveredconditionals="1" methods="11" coveredmethods="6"/>
+      <line num="9" count="1" type="stmt"/>
+      <line num="10" count="20" type="stmt"/>
+      <line num="11" count="20" type="stmt"/>
+      <line num="13" count="40" type="stmt"/>
+      <line num="14" count="0" type="stmt"/>
+      <line num="15" count="0" type="stmt"/>
+      <line num="16" count="0" type="stmt"/>
+      <line num="17" count="0" type="stmt"/>
+      <line num="18" count="0" type="stmt"/>
+      <line num="20" count="0" type="stmt"/>
+      <line num="26" count="20" type="stmt"/>
+      <line num="31" count="1" type="stmt"/>
+      <line num="32" count="20" type="stmt"/>
+      <line num="33" count="20" type="cond" truecount="1" falsecount="1"/>
+      <line num="34" count="0" type="stmt"/>
+      <line num="39" count="20" type="stmt"/>
+      <line num="47" count="1" type="stmt"/>
+      <line num="48" count="0" type="stmt"/>
+      <line num="51" count="1" type="stmt"/>
+      <line num="52" count="0" type="stmt"/>
+      <line num="53" count="0" type="cond" truecount="0" falsecount="2"/>
+      <line num="54" count="0" type="stmt"/>
+      <line num="59" count="0" type="stmt"/>
+      <line num="67" count="1" type="stmt"/>
+      <line num="68" count="0" type="stmt"/>
+      <line num="71" count="1" type="stmt"/>
+      <line num="72" count="0" type="stmt"/>
+      <line num="74" count="1" type="stmt"/>
+    </file>
   </project>
 </coverage>

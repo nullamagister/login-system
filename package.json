@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc",
     "serve": "tsc && node release/app.js",
-    "test": "jest --coverage ./src/test",
+    "test": "jest ./src/test",
+    "coverage": "jest --coverage ./src/test",
     "watch": "nodemon release/app.js"
   },
   "repository": {
