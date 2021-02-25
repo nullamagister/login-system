@@ -6,6 +6,19 @@ import IResponse from "./IResponse";
 export default interface ISystem {
 
     /**
+     * Get the all registered users
+     * @returns code: 200, data: list of users
+     */
+    getUsers(): Promise<IResponse>;
+
+
+    /**
+     * Get the all active users
+     * @returns code: 200, data: list of active users
+     */
+    getActiveUsers(): Promise<IResponse>;
+
+    /**
      * Login the user with the given username and password
      * @param username the username of the user
      * @param password the password of the user
@@ -14,10 +27,11 @@ export default interface ISystem {
     login(username: string, password: string): Promise<IResponse>;
 
     /**
-     * Log the current user out
+     * Logout the user with the given username
+     * @param username the username of the user
      * @returns code: 200 if succeeded, otherwise code: 400
      */
-    logout(): Promise<IResponse>;
+    logout(username: string): Promise<IResponse>;
 
     /**
      * Register a user
@@ -31,14 +45,14 @@ export default interface ISystem {
      * @param user the new user object to update by
      * @returns code: 200 if succeeded, otherwise code: 400
      */
-    modifyUser(username: string, user: IUser): Promise<IResponse>;
+    replaceUser(username: string, user: IUser): Promise<IResponse>;
 
     /**
      * delete the user of the given username
      * @param username the username of the user to be deleted
      * @returns code: 200 if succeeded, otherwise code: 400
      */
-    deleteUser(username: string): Promise<IResponse>;
+    removeUser(username: string): Promise<IResponse>;
 }
 
 /**

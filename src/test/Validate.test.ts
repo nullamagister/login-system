@@ -48,17 +48,18 @@ describe("Invalid Users", () => {
 
     it("Invalid name: min-length", async () => {
         const user: IUser = {
-            first_name: "abc",
+            first_name: "ab",
             last_name: "one",
             date_of_birth: "May 23, 1997",
             gender: Gender.Female,
-            secret: {username: "one", 
+            secret: {username: "abcabcabc", 
                      password: "123456789Aa", 
                      email: "one@email.com"}
         }
 
         try{
             await validator.user(user);
+            fail();
         } catch (err) {
             expect(err.code).toBe(402)
         }        

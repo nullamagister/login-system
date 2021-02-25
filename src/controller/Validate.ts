@@ -30,7 +30,7 @@ export default class Validate implements IValidate{
 
     private name(name: string): Promise<IResponse> {
         return new Promise((fulfill, reject) => {
-            if (/^[a-zA-Z]+$/.test(name) && name.length >= 7 && name.length <= 20) {
+            if (/^[a-zA-Z]+$/.test(name) && name.length >= 3 && name.length <= 20) {
                 fulfill({
                     code: 202,
                     message: "The given name is valid"

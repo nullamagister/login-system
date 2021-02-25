@@ -1,6 +1,108 @@
 import { Gender, IUser } from '../controller/ISystem';
 import System from '../controller/System';
 
+describe("Login User", () => {
+    let system: System;
+    let user: IUser;
+
+    beforeEach(async () => {
+        system = new System(); 
+        user = {
+            first_name: "myNameIs",
+            last_name: "myNameIs",
+            date_of_birth: "May 23, 1992",
+            gender: Gender.Male,
+            secret: {
+                username: "myValidUser1",
+                password: "myPasswoArd",
+                email: "myEmail@website.com"
+            }
+        }
+
+        await system.addUser(user);
+    });
+
+    it("Valid Login", async () => {
+        try {
+            const result = await system.login(user.secret.username, user.secret.password);
+            expect(result.code).toBe(200);
+        } catch (err) {
+            fail();
+        }
+    });
+
+    it("Invalid Login: username", async () => {
+        try {
+            await system.login("NotFoundUsnm", user.secret.password);
+            fail();
+        } catch (err) {
+            expect(err.code).toBe(400);
+        }
+    });
+
+    it("Invalid Login: password", async () => {
+        try {
+            await system.login(user.secret.username, "NotFoundPass");
+            fail();
+        } catch (err) {
+            expect(err.code).toBe(400);
+        }
+    });
+
+    it("Invalid Login: already logged in", async () => {
+        try {
+            const result = await system.login(user.secret.username, user.secret.password);
+            expect(result.code).toBe(200);
+            await system.login(user.secret.username, user.secret.password);
+            fail();
+        } catch (err) {
+            expect(err.code).toBe(400);
+        }
+    });
+});
+
+describe("Logout User", () => {
+    let system: System;
+    let user: IUser;
+
+    beforeEach(async () => {
+        system = new System(); 
+        user = {
+            first_name: "myNameIs",
+            last_name: "myNameIs",
+            date_of_birth: "May 23, 1992",
+            gender: Gender.Male,
+            secret: {
+                username: "myValidUser1",
+                password: "myPasswoArd",
+                email: "myEmail@website.com"
+            }
+        }
+
+        await system.addUser(user);
+        await system.login(user.secret.username, user.secret.password);
+    });
+    
+    it("Valid Logout", async () => {
+        try {
+            const result = await system.logout(user.secret.username);
+            expect(result.code).toBe(200);
+        } catch (err) {
+            console.log(err)
+            fail();
+        }
+    });
+
+    it("Invalid Logout: usrname", async () => {
+        try {
+            await system.logout("NotFound");
+            fail();
+        } catch (err) {
+            expect(err.code).toBe(400);
+        }
+    });
+})
+
 describe("Add User", () => {
     let system: System;
     let validUser: IUser;
@@ -99,7 +201,7 @@ describe("Modify User", () => {
         const username = validUser1.secret.username;
 
         try {
-            const result = await system.modifyUser(username, {
+            const result = await system.replaceUser(username, {
                 first_name: "modifiedName",
                 last_name: "ModifiedName",
                 date_of_birth: "April 7, 2000",
@@ -120,7 +222,7 @@ describe("Modify User", () => {
         const username = validUser1.secret.username;
 
         try {
-            const result = await system.modifyUser(username, {
+            const result = await system.replaceUser(username, {
                 first_name: "modifiedName",
                 last_name: "ModifiedName",
                 date_of_birth: "April 7, 2000",
@@ -142,7 +244,7 @@ describe("Modify User", () => {
         const username = validUser1.secret.username;
 
         try {
-             await system.modifyUser(username, {
+             await system.replaceUser(username, {
                 first_name: "modifiedName",
                 last_name: "ModifiedName",
                 date_of_birth: "April 7, 2000",
@@ -164,7 +266,7 @@ describe("Modify User", () => {
         const username = validUser1.secret.username;
 
         try {
-            await system.modifyUser(username, {
+            await system.replaceUser(username, {
                 first_name: "modifiedName",
                 last_name: "ModifiedName",
                 date_of_birth: "April 7, 2000",
@@ -186,7 +288,7 @@ describe("Modify User", () => {
         const username = "NotExistUN";
 
         try {
-            const result = await system.modifyUser(username, {
+            const result = await system.replaceUser(username, {
                 first_name: "modifiedName",
                 last_name: "ModifiedName",
                 date_of_birth: "April 7, 2000",
@@ -228,7 +330,7 @@ describe("Delete User", () => {
 
     it("Valid Deletion", async () => {
         try {
-            const result = await system.deleteUser(user.secret.username);
+            const result = await system.removeUser(user.secret.username);
             expect(result.code).toBe(200);
         } catch (err ){
             fail()
@@ -237,7 +339,7 @@ describe("Delete User", () => {
 
     it("Invalid Deletion: not-exist", async () => {
         try {
-            const result = await system.deleteUser("NotExist");
+            const result = await system.removeUser("NotExist");
             fail()
         } catch (err){
             expect(err.code).toBe(400);

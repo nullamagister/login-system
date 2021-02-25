@@ -1,3 +1,4 @@
+import { resolve } from "path";
 import IResponse from "./IResponse";
 import ISystem, { IUser } from "./ISystem";
 import Validate from "./Validate";
@@ -7,19 +8,93 @@ import Validate from "./Validate";
  */
 export default class System implements ISystem{
     private users: IUser[];
+    private activeUsers: IUser[];
     private validate: Validate;
 
     constructor() {
         this.users = [];
+        this.activeUsers = [];
         this.validate = new Validate();
     }
 
+    public getUsers(): Promise<IResponse> {
+        return new Promise((fulfill, reject) => {
+            fulfill({
+                code: 200,
+                message: "a list of all regestered users",
+                data: this.users
+            });
+        });
+    }
+
+    public getActiveUsers(): Promise<IResponse> {
+        return new Promise((fulfill, reject) => {
+            fulfill({
+                code: 200,
+                message: "a list of all active users",
+                data: this.activeUsers
+            });
+        });
+    }
+
     public login(username: string, password: string): Promise<IResponse> {
-        throw new Error("Method not implemented.");
+        return new Promise((fulfill, reject) => {
+            const isActive = (this.activeUsers.filter((user) => user.secret.username == username)).length == 1;
+            if (isActive) {
+                reject({
+                    code: 400,
+                    message: "the user is already logged in"
+                });
+            }
+
+            const notExist = (this.users.filter((user) => user.secret.username == username)).length == 0;
+            if (notExist) {
+                reject({
+                    code: 400,
+                    message: "the given username is incorrect"
+                });
+            }
+
+            const user = (this.users.filter((user) => user.secret.username == username))[0];
+            if (user.secret.password == password) {
+                this.activeUsers.push(user);
+                fulfill({
+                    code: 200,
+                    message: "logged in successfully"
+                });
+            } else {
+                reject({
+                    code: 400,
+                    message: "the given password is incorrect"
+                });
+            }
+            
+        });
     }
-    public logout(): Promise<IResponse> {
-        throw new Error("Method not implemented.");
+    
+    public logout(username: string): Promise<IResponse> {
+        return new Promise((fulfill, reject) => {
+            const notActive = (this.activeUsers.filter((user) => user.secret.username == username)).length == 0;
+            if (notActive) {
+                reject({
+                    code: 400,
+                    message: "the given username is not active"
+                });
+            } else {
+                for (let i = 0; i < this.activeUsers.length; i++) {
+                    if (this.activeUsers[i].secret.username == username) {
+                        this.activeUsers.splice(i, 1);
+                        fulfill({
+                            code: 200,
+                            message: "logged out successfully"
+                        });
+                        break;
+                    }
+                }
+            }
+        });
     }
+    
     public addUser(user: IUser): Promise<IResponse> {
         return new Promise(async (fulfill, reject) => {
             try {
@@ -45,7 +120,7 @@ export default class System implements ISystem{
         });
     }
     
-    public modifyUser(username: string, user: IUser): Promise<IResponse> {
+    public replaceUser(username: string, user: IUser): Promise<IResponse> {
         return new Promise(async (fulfill, reject) => {
             const wrappedOld =
                 this.users.filter((user) => user.secret.username == username);
@@ -105,7 +180,7 @@ export default class System implements ISystem{
         })
     }
 
-    public deleteUser(username: string): Promise<IResponse> {
+    public removeUser(username: string): Promise<IResponse> {
         return new Promise((fulfill, reject) => {
             const wrappedUser =
                 this.users.filter((user) => user.secret.username == username);
