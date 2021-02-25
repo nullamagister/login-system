@@ -51,7 +51,7 @@ var System = /** @class */ (function () {
      */
     function System() {
         var _this = this;
-        this.databaseURL = 'mongodb://127.0.0.1:27017';
+        this.databaseURL = 'mongodb://127.0.0.1:27017/myData';
         this.mongodb = new Mongodb_1.default(this.databaseURL);
         this.validate = new Validate_1.default();
         this.users = [];
@@ -288,7 +288,7 @@ var System = /** @class */ (function () {
                         _this.users.splice(i, 1);
                         fulfill({
                             code: 200,
-                            message: "update successfully"
+                            message: "deleted successfully"
                         });
                     }, function (err) {
                         reject(err);

@@ -48,9 +48,10 @@ var Mongodb = /** @class */ (function () {
     Mongodb.prototype.connect = function () {
         var _this = this;
         return new Promise(function (fulfill, reject) { return __awaiter(_this, void 0, void 0, function () {
+            var _this = this;
             return __generator(this, function (_a) {
                 mongoose_1.default.connect(this.url, { useNewUrlParser: true, useUnifiedTopology: true }).then(function () {
-                    console.log("Databased opened successfully");
+                    console.log("Database server is running at: " + _this.url);
                     fulfill({
                         code: 204,
                         message: "Databased opened successfully"
@@ -71,7 +72,7 @@ var Mongodb = /** @class */ (function () {
         return new Promise(function (fulfill, reject) { return __awaiter(_this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 mongoose_1.default.disconnect().then(function () {
-                    console.log("Databased closed successfully");
+                    console.log("Databased is closed");
                     fulfill({
                         code: 204,
                         message: "Databased closed successfully"

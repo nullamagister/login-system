@@ -14,7 +14,7 @@ export default class Mongodb implements IMongodb {
     public connect(): Promise<IResponse> {
         return new Promise(async (fulfill, reject) => {
             mongoose.connect(this.url, {useNewUrlParser: true, useUnifiedTopology: true}).then(() => {
-                console.log("Databased opened successfully");
+                console.log("Database server is running at: " + this.url);
                 fulfill({
                     code: 204,
                     message: "Databased opened successfully"
@@ -32,7 +32,7 @@ export default class Mongodb implements IMongodb {
     public disconnect(): Promise<IResponse> {
         return new Promise(async (fulfill, reject) => {
             mongoose.disconnect().then(() => {
-                console.log("Databased closed successfully");
+                console.log("Databased is closed");
                 fulfill({
                     code: 204,
                     message: "Databased closed successfully"

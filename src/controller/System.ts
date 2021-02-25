@@ -7,7 +7,7 @@ import Validate from "./Validate";
  * This is our class of our Login System
  */
 export default class System implements ISystem{
-    private readonly databaseURL = 'mongodb://127.0.0.1:27017';
+    private readonly databaseURL = 'mongodb://127.0.0.1:27017/myData';
 
     private mongodb: Mongodb;
     private validate: Validate;
@@ -237,7 +237,7 @@ export default class System implements ISystem{
                         this.users.splice(i, 1);
                         fulfill({
                             code: 200,
-                            message: "update successfully"
+                            message: "deleted successfully"
                         });
                     }, (err) => {
                         reject(err);
