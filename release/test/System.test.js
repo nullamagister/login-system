@@ -67,6 +67,16 @@ describe("Login User", function () {
             }
         });
     }); });
+    afterEach(function () { return __awaiter(void 0, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, system.disconnectDatabase()];
+                case 1:
+                    _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    }); });
     it("Valid Login", function () { return __awaiter(void 0, void 0, void 0, function () {
         var result, err_1;
         return __generator(this, function (_a) {
@@ -177,6 +187,16 @@ describe("Logout User", function () {
             }
         });
     }); });
+    afterEach(function () { return __awaiter(void 0, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, system.disconnectDatabase()];
+                case 1:
+                    _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    }); });
     it("Valid Logout", function () { return __awaiter(void 0, void 0, void 0, function () {
         var result, err_5;
         return __generator(this, function (_a) {
@@ -221,31 +241,44 @@ describe("Add User", function () {
     var system;
     var validUser;
     var invalidUser;
-    beforeAll(function () {
-        system = new System_1.default();
-        validUser = {
-            first_name: "myNameIs",
-            last_name: "myNameIs",
-            date_of_birth: "May 23, 1992",
-            gender: ISystem_1.Gender.Male,
-            secret: {
-                username: "myValidUser1",
-                password: "myPasswoArd",
-                email: "myEmail@website.com"
+    beforeAll(function () { return __awaiter(void 0, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            system = new System_1.default();
+            validUser = {
+                first_name: "myNameIs",
+                last_name: "myNameIs",
+                date_of_birth: "May 23, 1992",
+                gender: ISystem_1.Gender.Male,
+                secret: {
+                    username: "myValidUser1",
+                    password: "myPasswoArd",
+                    email: "myEmail@website.com"
+                }
+            };
+            invalidUser = {
+                first_name: "myNameIs",
+                last_name: "myNameIs",
+                date_of_birth: "Junuary 33, 1992",
+                gender: ISystem_1.Gender.Male,
+                secret: {
+                    username: "myInValidUser1",
+                    password: "myPassworWd",
+                    email: "myEmail@website.com"
+                }
+            };
+            return [2 /*return*/];
+        });
+    }); });
+    afterAll(function () { return __awaiter(void 0, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, system.disconnectDatabase()];
+                case 1:
+                    _a.sent();
+                    return [2 /*return*/];
             }
-        };
-        invalidUser = {
-            first_name: "myNameIs",
-            last_name: "myNameIs",
-            date_of_birth: "Junuary 33, 1992",
-            gender: ISystem_1.Gender.Male,
-            secret: {
-                username: "myInValidUser1",
-                password: "myPassworWd",
-                email: "myEmail@website.com"
-            }
-        };
-    });
+        });
+    }); });
     it("Valid Addition", function () { return __awaiter(void 0, void 0, void 0, function () {
         var result, err_7;
         return __generator(this, function (_a) {
@@ -345,6 +378,16 @@ describe("Modify User", function () {
             }
         });
     }); });
+    afterEach(function () { return __awaiter(void 0, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, system.disconnectDatabase()];
+                case 1:
+                    _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    }); });
     it("Valid Modification: with new username", function () { return __awaiter(void 0, void 0, void 0, function () {
         var username, result, err_10;
         return __generator(this, function (_a) {
@@ -354,7 +397,7 @@ describe("Modify User", function () {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, system.modifyUser(username, {
+                    return [4 /*yield*/, system.replaceUser(username, {
                             first_name: "modifiedName",
                             last_name: "ModifiedName",
                             date_of_birth: "April 7, 2000",
@@ -386,7 +429,7 @@ describe("Modify User", function () {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, system.modifyUser(username, {
+                    return [4 /*yield*/, system.replaceUser(username, {
                             first_name: "modifiedName",
                             last_name: "ModifiedName",
                             date_of_birth: "April 7, 2000",
@@ -418,7 +461,7 @@ describe("Modify User", function () {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, system.modifyUser(username, {
+                    return [4 /*yield*/, system.replaceUser(username, {
                             first_name: "modifiedName",
                             last_name: "ModifiedName",
                             date_of_birth: "April 7, 2000",
@@ -451,7 +494,7 @@ describe("Modify User", function () {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, system.modifyUser(username, {
+                    return [4 /*yield*/, system.replaceUser(username, {
                             first_name: "modifiedName",
                             last_name: "ModifiedName",
                             date_of_birth: "April 7, 2000",
@@ -483,7 +526,7 @@ describe("Modify User", function () {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, system.modifyUser(username, {
+                    return [4 /*yield*/, system.replaceUser(username, {
                             first_name: "modifiedName",
                             last_name: "ModifiedName",
                             date_of_birth: "April 7, 2000",
@@ -533,13 +576,23 @@ describe("Delete User", function () {
             }
         });
     }); });
+    afterEach(function () { return __awaiter(void 0, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, system.disconnectDatabase()];
+                case 1:
+                    _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    }); });
     it("Valid Deletion", function () { return __awaiter(void 0, void 0, void 0, function () {
         var result, err_15;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, system.deleteUser(user.secret.username)];
+                    return [4 /*yield*/, system.removeUser(user.secret.username)];
                 case 1:
                     result = _a.sent();
                     expect(result.code).toBe(200);
@@ -558,7 +611,7 @@ describe("Delete User", function () {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, system.deleteUser("NotExist")];
+                    return [4 /*yield*/, system.removeUser("NotExist")];
                 case 1:
                     result = _a.sent();
                     fail();

@@ -6,11 +6,22 @@ import IResponse from "./IResponse";
 export default interface ISystem {
 
     /**
+     * Connect to mongodb Database
+     * @returns code: 204 if succeeded, otherwise 404
+     */
+    connectDatabase(): Promise<IResponse>;
+
+    /**
+     * Disconnect to mongodb Database
+     * @returns code: 204 if succeeded, otherwise 404
+     */
+    disconnectDatabase(): Promise<IResponse>;
+
+    /**
      * Get the all registered users
      * @returns code: 200, data: list of users
      */
     getUsers(): Promise<IResponse>;
-
 
     /**
      * Get the all active users

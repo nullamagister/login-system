@@ -1,4 +1,4 @@
-import { resolve } from "path";
+import Mongodb from "../model/Mongodb";
 import IResponse from "./IResponse";
 import ISystem, { IUser } from "./ISystem";
 import Validate from "./Validate";
@@ -7,14 +7,46 @@ import Validate from "./Validate";
  * This is our class of our Login System
  */
 export default class System implements ISystem{
+    private readonly databaseURL = 'mongodb://127.0.0.1:27017';
+
+    private mongodb: Mongodb;
+    private validate: Validate;
     private users: IUser[];
     private activeUsers: IUser[];
-    private validate: Validate;
 
+    /**
+     * Connect to database.
+     * Retrieve users from database and store it in memory.
+     */
     constructor() {
+        this.mongodb = new Mongodb(this.databaseURL);
+        this.validate = new Validate();
         this.users = [];
         this.activeUsers = [];
-        this.validate = new Validate();
+        
+        this.connectDatabase().then(() => {
+            this.mongodb.getUsers().then((res) => this.users = res.data, (err) => this.users = []);
+        });
+    }
+
+    public connectDatabase(): Promise<IResponse> {
+        return new Promise((fulfill, reject) => {
+            this.mongodb.connect().then((res) => {
+                fulfill(res);
+            }, (err) => {
+                reject(err);
+            });
+        });
+    }
+
+    public disconnectDatabase(): Promise<IResponse> {
+        return new Promise((fulfill, reject) => {
+            this.mongodb.disconnect().then((res) => {
+                fulfill(res);
+            }, (err) => {
+                reject(err);
+            });
+        });
     }
 
     public getUsers(): Promise<IResponse> {
@@ -101,12 +133,16 @@ export default class System implements ISystem{
                 await this.validate.user(user);
                 const username = user.secret.username;
                 if (this.users.filter((user) => user.secret.username == username).length == 0) {
-                    // [TODO] database
-                    this.users.push(user);
-                    fulfill({
-                        code: 200,
-                        message: "registered successfully"
+                    this.mongodb.addUser(user).then(() => {
+                        this.users.push(user);
+                        fulfill({
+                            code: 200,
+                            message: "registered successfully"
+                        });
+                    }, (err) => {
+                        reject(err);
                     })
+                    
                 } else {
                     reject({
                         code: 400,
@@ -153,11 +189,10 @@ export default class System implements ISystem{
                 }
             }
 
-            // Update user
-            // [TODO] database
+            // Replace user
             for (let i = 0; i < this.users.length; i++){
                 if (this.users[i].secret.username == username) {
-                    this.users[i] = {
+                    const replaced: IUser = {
                         first_name: user.first_name,
                         last_name: user.last_name,
                         date_of_birth: user.date_of_birth,
@@ -168,12 +203,15 @@ export default class System implements ISystem{
                             email: user.secret.email
                         }
                     }
-
-                    fulfill({
-                        code: 200,
-                        message: "update successfully"
-                    });
-
+                    this.mongodb.replaceUser(username, replaced).then(() => {
+                        this.users[i] = replaced
+                        fulfill({
+                            code: 200,
+                            message: "update successfully"
+                        });
+                    }, (err) => {
+                        reject(err);
+                    })
                     break;
                 }
             }
@@ -193,17 +231,17 @@ export default class System implements ISystem{
                 });
             }
             
-            // [TODO] database
             for (let i = 0; i < this.users.length; i++){
                 if (this.users[i].secret.username == username) {
-                    
-                    this.users.splice(i, 1);
-
-                    fulfill({
-                        code: 200,
-                        message: "update successfully"
+                    this.mongodb.removeUser(username).then(() => {
+                        this.users.splice(i, 1);
+                        fulfill({
+                            code: 200,
+                            message: "update successfully"
+                        });
+                    }, (err) => {
+                        reject(err);
                     });
-
                     break;
                 }
             }

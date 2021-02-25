@@ -48,6 +48,7 @@ describe("Add User", function () {
     beforeAll(function () {
         url = 'mongodb://127.0.0.1:27017/myTestData';
         mongodb = new Mongodb_1.default(url);
+        mongodb.connect();
         user = {
             first_name: "one",
             last_name: "one",
@@ -128,6 +129,7 @@ describe("Remove User", function () {
                 case 0:
                     url = 'mongodb://127.0.0.1:27017/myTestData';
                     mongodb = new Mongodb_1.default(url);
+                    mongodb.connect();
                     user = {
                         first_name: "one",
                         last_name: "one",
@@ -255,6 +257,7 @@ describe("Replace User", function () {
                 case 0:
                     url = 'mongodb://127.0.0.1:27017/myTestData';
                     mongodb = new Mongodb_1.default(url);
+                    mongodb.connect();
                     user1 = {
                         first_name: "one",
                         last_name: "one",
@@ -388,111 +391,6 @@ describe("Replace User", function () {
                     expect(err_8.code).toBe(404);
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
-            }
-        });
-    }); }, 20000);
-});
-describe("Delete User", function () {
-    var url;
-    var mongodb;
-    var user;
-    beforeAll(function () { return __awaiter(void 0, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    url = 'mongodb://127.0.0.1:27017/myTestData';
-                    mongodb = new Mongodb_1.default(url);
-                    user = {
-                        first_name: "one",
-                        last_name: "one",
-                        date_of_birth: "May 5, 2008",
-                        gender: ISystem_1.Gender.Male,
-                        secret: {
-                            username: "oneoneone",
-                            password: "oneoneoneONE",
-                            email: "one@email.com"
-                        }
-                    };
-                    return [4 /*yield*/, mongodb.addUser(user)];
-                case 1:
-                    _a.sent();
-                    return [2 /*return*/];
-            }
-        });
-    }); });
-    afterAll(function () { return __awaiter(void 0, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, mongodb.destroy()];
-                case 1:
-                    _a.sent();
-                    return [4 /*yield*/, mongodb.disconnect()];
-                case 2:
-                    _a.sent();
-                    return [2 /*return*/];
-            }
-        });
-    }); });
-    it("Valid delete user", function () { return __awaiter(void 0, void 0, void 0, function () {
-        var result, err_9;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, mongodb.deleteUser(user.secret.username)];
-                case 1:
-                    result = _a.sent();
-                    expect(result.code).toBe(204);
-                    return [3 /*break*/, 3];
-                case 2:
-                    err_9 = _a.sent();
-                    fail();
-                    return [3 /*break*/, 3];
-                case 3: return [2 /*return*/];
-            }
-        });
-    }); });
-    it("Invalid delete user: not found", function () { return __awaiter(void 0, void 0, void 0, function () {
-        var err_10;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, mongodb.deleteUser(user.secret.username)];
-                case 1:
-                    _a.sent();
-                    fail();
-                    return [3 /*break*/, 3];
-                case 2:
-                    err_10 = _a.sent();
-                    expect(err_10.code).toBe(404);
-                    return [3 /*break*/, 3];
-                case 3: return [2 /*return*/];
-            }
-        });
-    }); });
-    it("Invalid delete user: internal error", function () { return __awaiter(void 0, void 0, void 0, function () {
-        var err_11;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 3, , 5]);
-                    return [4 /*yield*/, mongodb.disconnect()];
-                case 1:
-                    _a.sent();
-                    return [4 /*yield*/, mongodb.deleteUser(user.secret.username)];
-                case 2:
-                    _a.sent();
-                    fail();
-                    return [3 /*break*/, 5];
-                case 3:
-                    err_11 = _a.sent();
-                    return [4 /*yield*/, mongodb.connect()];
-                case 4:
-                    _a.sent();
-                    expect(err_11.code).toBe(404);
-                    return [3 /*break*/, 5];
-                case 5: return [2 /*return*/];
             }
         });
     }); }, 20000);

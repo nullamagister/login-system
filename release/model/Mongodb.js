@@ -44,7 +44,6 @@ var User_1 = __importDefault(require("./User"));
 var Mongodb = /** @class */ (function () {
     function Mongodb(url) {
         this.url = url;
-        this.connect();
     }
     Mongodb.prototype.connect = function () {
         var _this = this;
@@ -138,27 +137,6 @@ var Mongodb = /** @class */ (function () {
             });
         });
     };
-    Mongodb.prototype.removeUser = function (username) {
-        return new Promise(function (fulfill, reject) {
-            User_1.default.deleteOne({ 'secret.username': username }).then(function (res) {
-                if (res.deletedCount == 0) {
-                    reject({
-                        code: 404,
-                        message: "Error: unable to remove the given user"
-                    });
-                }
-                fulfill({
-                    code: 204,
-                    message: "The given username user removed successfully"
-                });
-            }, function () {
-                reject({
-                    code: 404,
-                    message: "Error: unable to remove the given user"
-                });
-            });
-        });
-    };
     Mongodb.prototype.replaceUser = function (username, user) {
         return new Promise(function (fulfill, reject) {
             var newUser = new User_1.default(user);
@@ -184,23 +162,23 @@ var Mongodb = /** @class */ (function () {
             });
         });
     };
-    Mongodb.prototype.deleteUser = function (username) {
+    Mongodb.prototype.removeUser = function (username) {
         return new Promise(function (fulfill, reject) {
             User_1.default.deleteOne({ 'secret.username': username }).then(function (res) {
                 if (res.deletedCount == 0) {
                     reject({
                         code: 404,
-                        message: "Error: unable to delete the given user"
+                        message: "Error: unable to remove the given user"
                     });
                 }
                 fulfill({
                     code: 204,
-                    message: "The given username user deleted successfully"
+                    message: "The given username user removed successfully"
                 });
-            }, function (err) {
+            }, function () {
                 reject({
                     code: 404,
-                    message: "Error: unable to delete the given user"
+                    message: "Error: unable to remove the given user"
                 });
             });
         });

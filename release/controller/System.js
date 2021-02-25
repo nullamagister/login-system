@@ -39,16 +39,47 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var Mongodb_1 = __importDefault(require("../model/Mongodb"));
 var Validate_1 = __importDefault(require("./Validate"));
 /**
  * This is our class of our Login System
  */
 var System = /** @class */ (function () {
+    /**
+     * Connect to database.
+     * Retrieve users from database and store it in memory.
+     */
     function System() {
+        var _this = this;
+        this.databaseURL = 'mongodb://127.0.0.1:27017';
+        this.mongodb = new Mongodb_1.default(this.databaseURL);
+        this.validate = new Validate_1.default();
         this.users = [];
         this.activeUsers = [];
-        this.validate = new Validate_1.default();
+        this.connectDatabase().then(function () {
+            _this.mongodb.getUsers().then(function (res) { return _this.users = res.data; }, function (err) { return _this.users = []; });
+        });
     }
+    System.prototype.connectDatabase = function () {
+        var _this = this;
+        return new Promise(function (fulfill, reject) {
+            _this.mongodb.connect().then(function (res) {
+                fulfill(res);
+            }, function (err) {
+                reject(err);
+            });
+        });
+    };
+    System.prototype.disconnectDatabase = function () {
+        var _this = this;
+        return new Promise(function (fulfill, reject) {
+            _this.mongodb.disconnect().then(function (res) {
+                fulfill(res);
+            }, function (err) {
+                reject(err);
+            });
+        });
+    };
     System.prototype.getUsers = function () {
         var _this = this;
         return new Promise(function (fulfill, reject) {
@@ -130,6 +161,7 @@ var System = /** @class */ (function () {
         var _this = this;
         return new Promise(function (fulfill, reject) { return __awaiter(_this, void 0, void 0, function () {
             var username_1, err_1;
+            var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -139,11 +171,14 @@ var System = /** @class */ (function () {
                         _a.sent();
                         username_1 = user.secret.username;
                         if (this.users.filter(function (user) { return user.secret.username == username_1; }).length == 0) {
-                            // [TODO] database
-                            this.users.push(user);
-                            fulfill({
-                                code: 200,
-                                message: "registered successfully"
+                            this.mongodb.addUser(user).then(function () {
+                                _this.users.push(user);
+                                fulfill({
+                                    code: 200,
+                                    message: "registered successfully"
+                                });
+                            }, function (err) {
+                                reject(err);
                             });
                         }
                         else {
@@ -162,10 +197,11 @@ var System = /** @class */ (function () {
             });
         }); });
     };
-    System.prototype.modifyUser = function (username, user) {
+    System.prototype.replaceUser = function (username, user) {
         var _this = this;
         return new Promise(function (fulfill, reject) { return __awaiter(_this, void 0, void 0, function () {
-            var wrappedOld, err_2, wrappedUser, i;
+            var wrappedOld, err_2, wrappedUser, _loop_1, this_1, i, state_1;
+            var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -198,11 +234,9 @@ var System = /** @class */ (function () {
                                 });
                             }
                         }
-                        // Update user
-                        // [TODO] database
-                        for (i = 0; i < this.users.length; i++) {
-                            if (this.users[i].secret.username == username) {
-                                this.users[i] = {
+                        _loop_1 = function (i) {
+                            if (this_1.users[i].secret.username == username) {
+                                var replaced_1 = {
                                     first_name: user.first_name,
                                     last_name: user.last_name,
                                     date_of_birth: user.date_of_birth,
@@ -213,19 +247,31 @@ var System = /** @class */ (function () {
                                         email: user.secret.email
                                     }
                                 };
-                                fulfill({
-                                    code: 200,
-                                    message: "update successfully"
+                                this_1.mongodb.replaceUser(username, replaced_1).then(function () {
+                                    _this.users[i] = replaced_1;
+                                    fulfill({
+                                        code: 200,
+                                        message: "update successfully"
+                                    });
+                                }, function (err) {
+                                    reject(err);
                                 });
-                                break;
+                                return "break";
                             }
+                        };
+                        this_1 = this;
+                        // Replace user
+                        for (i = 0; i < this.users.length; i++) {
+                            state_1 = _loop_1(i);
+                            if (state_1 === "break")
+                                break;
                         }
                         return [2 /*return*/];
                 }
             });
         }); });
     };
-    System.prototype.deleteUser = function (username) {
+    System.prototype.removeUser = function (username) {
         var _this = this;
         return new Promise(function (fulfill, reject) {
             var wrappedUser = _this.users.filter(function (user) { return user.secret.username == username; });
@@ -236,16 +282,24 @@ var System = /** @class */ (function () {
                     message: "the given username is not exist"
                 });
             }
-            // [TODO] database
-            for (var i = 0; i < _this.users.length; i++) {
+            var _loop_2 = function (i) {
                 if (_this.users[i].secret.username == username) {
-                    _this.users.splice(i, 1);
-                    fulfill({
-                        code: 200,
-                        message: "update successfully"
+                    _this.mongodb.removeUser(username).then(function () {
+                        _this.users.splice(i, 1);
+                        fulfill({
+                            code: 200,
+                            message: "update successfully"
+                        });
+                    }, function (err) {
+                        reject(err);
                     });
-                    break;
+                    return "break";
                 }
+            };
+            for (var i = 0; i < _this.users.length; i++) {
+                var state_2 = _loop_2(i);
+                if (state_2 === "break")
+                    break;
             }
         });
     };

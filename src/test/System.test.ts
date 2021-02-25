@@ -6,7 +6,7 @@ describe("Login User", () => {
     let user: IUser;
 
     beforeEach(async () => {
-        system = new System(); 
+        system = new System();
         user = {
             first_name: "myNameIs",
             last_name: "myNameIs",
@@ -20,6 +20,10 @@ describe("Login User", () => {
         }
 
         await system.addUser(user);
+    });
+
+    afterEach(async () => {
+        await system.disconnectDatabase();
     });
 
     it("Valid Login", async () => {
@@ -82,6 +86,10 @@ describe("Logout User", () => {
         await system.addUser(user);
         await system.login(user.secret.username, user.secret.password);
     });
+
+    afterEach(async () => {
+        await system.disconnectDatabase();
+    });
     
     it("Valid Logout", async () => {
         try {
@@ -108,8 +116,8 @@ describe("Add User", () => {
     let validUser: IUser;
     let invalidUser: IUser;
 
-    beforeAll(() => {
-        system = new System(); 
+    beforeAll(async () => {
+        system = new System();
         validUser = {
             first_name: "myNameIs",
             last_name: "myNameIs",
@@ -132,7 +140,11 @@ describe("Add User", () => {
                 email: "myEmail@website.com"
             }
         }
-    })
+    });
+
+    afterAll(async () => {
+        await system.disconnectDatabase();
+    });
 
     it("Valid Addition", async () => {
         try {
@@ -195,7 +207,11 @@ describe("Modify User", () => {
 
         await system.addUser(validUser1);
         await system.addUser(validUser2);
-    })
+    });
+
+    afterEach(async () => {
+        await system.disconnectDatabase();
+    });
 
     it("Valid Modification: with new username", async () => {
         const username = validUser1.secret.username;
@@ -325,8 +341,11 @@ describe("Delete User", () => {
         }
 
         await system.addUser(user);
-    })
+    });
 
+    afterEach(async () => {
+        await system.disconnectDatabase();
+    })
 
     it("Valid Deletion", async () => {
         try {
