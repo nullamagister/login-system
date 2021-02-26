@@ -1,0 +1,28 @@
+/*
+ * Devices Dimensions for media Query
+ */
+ $mobileSize: (maxWidth: 767px);
+ $tabletSize: (minWidth: 768px, maxWidth: 991px);
+ $smallScreenSize: (minWidth: 992px, maxWidth: 1199px);
+ $largeScreenSize: (minWidth: 1200px);
+
+ /*
+ * Website Basic Colors
+ */
+ :root{
+     --main-color: #FFF;
+ }
+
+ /**
+ * Directional values
+ */
+$floatLeft: left;
+$floatRight: right;
+$textLeft: left;
+$textRight: Right;
+
+/* 
+ *Section padding top/bottom 
+ */
+ $sectionPaddingTop: 30px;
+ $sectionPaddingBottom: 30px

@@ -1,0 +1,11 @@
+/*
+ * A placeholder to add the regular padding after and before any section
+ */
+%sectionTopBottomPadding{
+    padding-top: $sectionPaddingTop;
+    padding-bottom: $sectionPaddingBottom;
+}
+
+.clearfix{
+    clear: both;
+}

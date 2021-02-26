@@ -5,8 +5,7 @@ import cookieParser from 'cookie-parser';
 import multer from 'multer';
 import session from 'express-session';
 import System from '../controller/System';
-import apiRouter from './routers/api'
-import indexRouter from './routers/index'
+import apiRouter from './routers/Api'
 
 export default class Server {
     private static system: System = new System();
@@ -59,7 +58,7 @@ export default class Server {
         this.app.use(session({secret: key, resave: true, saveUninitialized: true}));
 
         // Static files
-        this.app.use('/view', express.static('public'));
+        this.app.use('/view', express.static('frontend'));
 
         // Template Engine
         this.app.set('view engine', 'pug');
@@ -67,7 +66,6 @@ export default class Server {
 
     private routers() {
         this.app.use('/api', apiRouter);
-        this.app.use('/', indexRouter);
     }
 
     private secretKeyGenerator(): string {

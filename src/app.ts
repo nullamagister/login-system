@@ -1,4 +1,4 @@
-import Server from './server/server';
+import Server from './server/Server';
 
 class App {
     private server: Server;

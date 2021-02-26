@@ -1,0 +1,99 @@
+/**
+ * Media Query Mixins
+ * Provides all screen sizes for media query, Including:
+ *  - mobileMedia for mobile screen
+ *  - tabletMedia for tablet screen
+ *  - smallScreenMedia for computer small screen
+ *  - largeScreenMedia for computer large screen
+ *  - fromTabletMedia for tablet, small and large computer screen
+ *  - fromSmallScreenMedia for small and computer large screen
+ */
+ @mixin mobileMedia {
+    @media (max-width: map-get($mobileSize, "maxWidth")) {
+        @content;
+    }
+}
+
+@mixin tabletMedia {
+    @media (min-width: map-get($tabletSize, "minWidth")) 
+    and (max-width: map-get($tabletSize, "maxWidth")) {
+        @content;
+    }
+}
+
+@mixin smallScreenMedia {
+    @media (min-width: map-get($smallScreenSize, "minWidth")) 
+    and (max-width: map-get($smallScreenSize, "maxWidth")) {
+        @content;
+    }
+}
+
+@mixin largeScreenMedia {
+    @media (min-width: map-get($largeScreenSize, "minWidth")) {
+        @content;
+    }
+}
+
+@mixin fromTabletMedia {
+    @media (min-width: map-get($tabletSize, "minWidth")) {
+        @content;
+    }
+}
+
+@mixin fromSmallScreenMedia {
+    @media (min-width: map-get($smallScreenSize, "minWidth"))  {
+        @content;
+    }
+}
+
+/**
+ * Overlay Mixin
+ * Adds all needed properties for any overlay
+ * @param {$bgColor}: the value of background-color property 
+ * @param {index}: the value of z-index property
+ */
+ @mixin overlay($bgColor, $index) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: $bgColor;
+    z-index: $index;
+}
+
+/**
+ * Prefixer Mixin
+ * Adds all the given prefixes for the given property
+ * @param {$property}: the property that we want to add prefixes to it 
+ * @param {value}: the value of the given property
+ * @param {prefixes}: prefixes that we ant to add without dashes, for example: [webkit, moz, o, ms]
+ *
+ * NOTE: After adding prefixes, the mixin automatically add the property without prefix
+ */
+ @mixin prefixer($property, $value, $prefixes: ()) {
+    @each $prefix in $prefixes {
+        #{"-" + $prefix + "-" + $property}: $value;
+    }
+
+    #{$property}: $value;
+}
+
+/**
+ * Keyframe Mixin
+ * Adds all prefixes for the given keyframe
+ * @param {$name}: the name of the keyframe 
+ */
+@mixin keyFrame($name){
+    @-webkit-keyframes #{$name} {
+        @content;
+    }
+
+    @-moz-keyframes #{$name} {
+        @content;
+    }
+
+    @keyframes #{$name} {
+        @content;
+    }
+}

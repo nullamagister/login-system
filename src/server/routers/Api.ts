@@ -1,7 +1,7 @@
 import express, { Router } from 'express';
 import { Gender, IUser } from '../../controller/ISystem';
 import System from '../../controller/System';
-import Server from '../server';
+import Server from '../Server';
 
 const router: Router = express.Router();
 let system: System; 
