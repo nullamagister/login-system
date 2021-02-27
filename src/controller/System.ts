@@ -49,12 +49,43 @@ export default class System implements ISystem{
         });
     }
 
+    public getUser(username: string): Promise<IResponse> {
+        return new Promise((fulfill, reject) => {
+            this.users.forEach((user) => {
+                if (user.secret.username == username) {
+                    fulfill({
+                        code: 200,
+                        message: "a list of all regestered users",
+                        data: user
+                    });
+                }
+            });
+        });
+    }
+
     public getUsers(): Promise<IResponse> {
         return new Promise((fulfill, reject) => {
             fulfill({
                 code: 200,
                 message: "a list of all regestered users",
                 data: this.users
+            });
+        });
+    }
+
+    public getInactiveUsers(): Promise<IResponse> {
+        return new Promise((fulfill, reject) => {
+            let inactiveUsers: IUser[] = [];
+            this.users.forEach((user) => {
+                if (!this.activeUsers.includes(user)) {
+                    inactiveUsers.push(user);
+                }
+            });
+
+            fulfill({
+                code: 200,
+                message: "a list of all active users",
+                data: inactiveUsers
             });
         });
     }
@@ -189,7 +220,26 @@ export default class System implements ISystem{
                 }
             }
 
-            // Replace user
+            // Replace use in this.activeUsers
+            for (let i = 0; i < this.activeUsers.length; i++){
+                if (this.activeUsers[i].secret.username == username) {
+                    const replaced: IUser = {
+                        first_name: user.first_name,
+                        last_name: user.last_name,
+                        date_of_birth: user.date_of_birth,
+                        gender: user.gender,
+                        secret: {
+                            username: user.secret.username,
+                            password: user.secret.password,
+                            email: user.secret.email
+                        }
+                    }
+                    this.activeUsers[i] = replaced;
+                    break;
+                }
+            }
+
+            // Replace user in this.users and database
             for (let i = 0; i < this.users.length; i++){
                 if (this.users[i].secret.username == username) {
                     const replaced: IUser = {
@@ -203,6 +253,7 @@ export default class System implements ISystem{
                             email: user.secret.email
                         }
                     }
+                    this.users[i] = replaced;
                     this.mongodb.replaceUser(username, replaced).then(() => {
                         this.users[i] = replaced
                         fulfill({
@@ -211,7 +262,7 @@ export default class System implements ISystem{
                         });
                     }, (err) => {
                         reject(err);
-                    })
+                    });
                     break;
                 }
             }
@@ -231,6 +282,15 @@ export default class System implements ISystem{
                 });
             }
             
+            // Inactivate
+            for (let i = 0; i < this.activeUsers.length; i++) {
+                if (this.activeUsers[i].secret.username == username) {
+                    this.activeUsers.splice(i, 1);
+                    break;
+                }
+            }
+
+            // Remove
             for (let i = 0; i < this.users.length; i++){
                 if (this.users[i].secret.username == username) {
                     this.mongodb.removeUser(username).then(() => {

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head> 
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="css/all.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/home.min.css">
+    <link rel="stylesheet" href="webfonts/AkayaTelivigala-Regular.ttf">
+    <link rel="icon" href="imgs/icon.png">
+    <title>Home</title>
+  </head>
+  <body> 
+    <header class="bg-dark p-2 mb-5 text-white text-center">
+      <h1><span class="text-primary">Login</span> System</h1>
+    </header>
+    <section class="content" id="content">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-6 col-sm-12">
+            <h2 class="text-center">Account Info</h2>
+            <form class="selfUser" id="selfuser">
+              <div class="form-group row">
+                <div class="col">
+                  <label for="first_name">First name </label>
+                </div>
+                <input class="form-control col" type="text" value="unknown" name="first_name" required disabled autocomplete="off">
+              </div>
+              <div class="form-group row">
+                <div class="col">
+                  <label for="first_name">Last name </label>
+                </div>
+                <input class="form-control col" type="text" value="unknown" name="last" required disabled autocomplete="off">
+              </div>
+              <div class="form-group">
+                <div class="form-check form-check-inline">       
+                  <input class="form-check-input" type="radio" name="gender" value="mane" required disabled>
+                  <label class="form-check-label" for="gender">Male</label>
+                  <input class="form-check-input" type="radio" name="gender" value="female" required disabled>
+                  <label class="form-check-label" for="gender">Female </label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="date_of_birth">Date of Birth</label>
+                <input class="form-control" type="date" name="date_of_birth" required disabled>
+              </div>
+              <div class="form-group">
+                <label for="username">Username </label>
+                <input class="form-control" type="text" name="username" required disabled autocomplete="off">
+              </div>
+              <div class="form-group">
+                <label for="password">Password</label>
+                <input class="form-control" type="password" name="password" required disabled><i class="fa fa-eye-slash" aria-hidden="true"></i>
+<i class="fa fa-eye" aria-hidden="true"></i>
+              </div>
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input class="form-control" type="email" name="email" aria-describedby="emailHelp" required disabled autocomplete="off"><small class="form-text text-muted" id="emailHelp">We'll never share your email with anyone else. </small>
+              </div>
+              <div class="form-group">
+                <div class="actions">
+                  <input class="btn btn-success" id="update" type="submit" value="update">
+                  <input class="btn btn-danger" id="delete" type="submit" value="delete">
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="col-lg-3 col-sm-6">
+            <h2 class="text-center">Online</h2>
+            <ul class="activeUsers list-unstyled" id="activeUsers">
+              <li class="activeUser"> <img class="male" src="imgs/male-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="activeUser"> <img class="male" src="imgs/male-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="activeUser"> <img class="male" src="imgs/male-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="activeUser"> <img class="female" src="imgs/female-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="activeUser"> <img class="female" src="imgs/female-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="activeUser"> <img class="male" src="imgs/male-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="activeUser"> <img class="male" src="imgs/male-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="activeUser"> <img class="female" src="imgs/female-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="activeUser"> <img class="female" src="imgs/female-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="activeUser"> <img class="female" src="imgs/female-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="activeUser"> <img class="male" src="imgs/male-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="activeUser"> <img class="male" src="imgs/male-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="activeUser"> <img class="male" src="imgs/male-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="activeUser"> <img class="male" src="imgs/male-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="activeUser"> <img class="female" src="imgs/female-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="activeUser"> <img class="female" src="imgs/female-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="activeUser"> <img class="male" src="imgs/male-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="activeUser"> <img class="male" src="imgs/male-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="activeUser"> <img class="female" src="imgs/female-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="activeUser"> <img class="female" src="imgs/female-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="activeUser"> <img class="female" src="imgs/female-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="activeUser"> <img class="male" src="imgs/male-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="activeUser"> <img class="male" src="imgs/male-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="activeUser"> <img class="male" src="imgs/male-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="activeUser"> <img class="male" src="imgs/male-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="activeUser"> <img class="female" src="imgs/female-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="activeUser"> <img class="female" src="imgs/female-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="activeUser"> <img class="male" src="imgs/male-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="activeUser"> <img class="male" src="imgs/male-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="activeUser"> <img class="female" src="imgs/female-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="activeUser"> <img class="female" src="imgs/female-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="activeUser"> <img class="female" src="imgs/female-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="activeUser"> <img class="male" src="imgs/male-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="activeUser"> <img class="male" src="imgs/male-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="activeUser"> <img class="male" src="imgs/male-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="activeUser"> <img class="male" src="imgs/male-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="activeUser"> <img class="female" src="imgs/female-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="activeUser"> <img class="female" src="imgs/female-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="activeUser"> <img class="male" src="imgs/male-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="activeUser"> <img class="male" src="imgs/male-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="activeUser"> <img class="female" src="imgs/female-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="activeUser"> <img class="female" src="imgs/female-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="activeUser"> <img class="female" src="imgs/female-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="activeUser"> <img class="male" src="imgs/male-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+            </ul>
+          </div>
+          <div class="col-lg-3 col-sm-6">
+            <h2 class="text-center">Offline</h2>
+            <ul class="inActiveUsers list-unstyled" id="inActiveUsers">
+              <li class="inActiveUser"> <img class="male" src="imgs/male-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="inActiveUser"> <img class="male" src="imgs/male-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="inActiveUser"> <img class="male" src="imgs/male-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="inActiveUser"> <img class="female" src="imgs/female-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="inActiveUser"> <img class="female" src="imgs/female-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="inActiveUser"> <img class="male" src="imgs/male-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="inActiveUser"> <img class="male" src="imgs/male-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="inActiveUser"> <img class="female" src="imgs/female-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="inActiveUser"> <img class="female" src="imgs/female-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="inActiveUser"> <img class="female" src="imgs/female-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="inActiveUser"> <img class="male" src="imgs/male-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="inActiveUser"> <img class="male" src="imgs/male-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="inActiveUser"> <img class="male" src="imgs/male-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="inActiveUser"> <img class="male" src="imgs/male-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="inActiveUser"> <img class="female" src="imgs/female-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="inActiveUser"> <img class="female" src="imgs/female-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="inActiveUser"> <img class="male" src="imgs/male-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="inActiveUser"> <img class="male" src="imgs/male-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="inActiveUser"> <img class="female" src="imgs/female-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="inActiveUser"> <img class="female" src="imgs/female-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="inActiveUser"> <img class="female" src="imgs/female-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="inActiveUser"> <img class="male" src="imgs/male-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="inActiveUser"> <img class="male" src="imgs/male-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="inActiveUser"> <img class="male" src="imgs/male-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="inActiveUser"> <img class="male" src="imgs/male-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="inActiveUser"> <img class="female" src="imgs/female-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="inActiveUser"> <img class="female" src="imgs/female-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="inActiveUser"> <img class="male" src="imgs/male-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="inActiveUser"> <img class="male" src="imgs/male-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="inActiveUser"> <img class="female" src="imgs/female-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="inActiveUser"> <img class="female" src="imgs/female-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="inActiveUser"> <img class="female" src="imgs/female-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="inActiveUser"> <img class="male" src="imgs/male-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="inActiveUser"> <img class="male" src="imgs/male-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="inActiveUser"> <img class="male" src="imgs/male-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="inActiveUser"> <img class="male" src="imgs/male-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="inActiveUser"> <img class="female" src="imgs/female-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="inActiveUser"> <img class="female" src="imgs/female-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="inActiveUser"> <img class="male" src="imgs/male-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="inActiveUser"> <img class="male" src="imgs/male-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="inActiveUser"> <img class="female" src="imgs/female-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="inActiveUser"> <img class="female" src="imgs/female-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="inActiveUser"> <img class="female" src="imgs/female-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+              <li class="inActiveUser"> <img class="male" src="imgs/male-avater.png" alt="avatar"><span>John Doe</span>
+                <hr>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+    <footer class="bg-dark p-2 mt-5 text-white text-center"><span>All Rights reserved &copy; <span class="text-primary">Samo Bsgr </span></span></footer>
+    <script src="js/jquery-3.5.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.nicescroll.min.js"></script>
+    <script src="js/plugins.min.js"></script>
+    <script src="js/ajax.min.js"></script>
+  </body>
+</html>

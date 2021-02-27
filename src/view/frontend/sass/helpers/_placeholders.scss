@@ -6,6 +6,114 @@
     padding-bottom: $sectionPaddingBottom;
 }
 
+/*
+ * A placeholder to customize bootstrap form
+ */
+%form{
+    border: 1px solid #CCC;
+    padding: 50px;
+    border-radius: 15px;
+    input[type='submit']{
+        width: 100%;
+        margin-top: 25px;
+        font-size: 23px;
+        font-weight: bold;
+        text-transform: uppercase;
+        font-family: 'Akaya Telivigala', cursive;
+    }
+    input[type='radio']:last-of-type{
+        margin-left: 15px;
+    }
+    span{
+        margin-right: 15px;
+    }
+}
+
+%disabledForm{
+    @extend %form;
+    .form-group{
+        position: relative;
+    }
+    input{
+        color: #007bff;
+    }
+    input[type='submit']{
+        color: #FFF;
+        width: 33.2222%;
+    }
+    i{
+        position: absolute;
+        top: 42px;
+        right: 12px;
+        cursor: pointer;
+    }
+    i:last-of-type{
+        display: none;
+    }
+
+}
+
+%usersList{
+    border: 1px solid #CCC;
+    padding: 25px;
+    border-radius: 15px;
+    overflow-y: scroll;
+    .activeUser,
+    .inActiveUser{
+        position: relative;
+        font-family: 'Akaya Telivigala', cursive;
+        font-size: 20px;
+        text-transform: capitalize;
+        padding-top: 8px;
+        padding-bottom: 8px;
+        color: #28a745;
+        img{
+            width: 30px;
+            height: 30px;
+            margin-right: 8px;
+            cursor: pointer;
+            &.male{
+                border: 2px solid #fd7e14;
+                border-radius: 50%;
+            }
+            &.female{
+                border: 2px solid #e83e8c;
+                border-radius: 50%;
+            }
+        }
+        span{
+            cursor: pointer;
+        }
+        hr{
+            margin: 0;
+            padding: 0;
+        }
+    }
+
+}
+
+%responseContent{
+    position: relative;
+    .error, .success{
+        position: absolute;
+        text-align: center;
+        width: 100%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        h2{
+            font-size: 32px;
+            .title{
+                text-transform: uppercase;
+                color: #dc3545;
+            }
+            .message{
+                color: rgb(0, 123, 255);
+            }
+        }
+    }
+}
+
 .clearfix{
     clear: both;
 }

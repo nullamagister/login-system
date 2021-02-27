@@ -6,6 +6,7 @@ import multer from 'multer';
 import session from 'express-session';
 import System from '../controller/System';
 import apiRouter from './routers/Api'
+import websiteRouter from './routers/Website';
 
 export default class Server {
     private static system: System = new System();
@@ -57,14 +58,16 @@ export default class Server {
         const key = this.secretKeyGenerator();
         this.app.use(session({secret: key, resave: true, saveUninitialized: true}));
 
-        // Static files
-        this.app.use('/view', express.static('frontend'));
-
         // Template Engine
         this.app.set('view engine', 'pug');
+
+        // Views & Static files 
+        this.app.set('views', './src/view/frontend/pug')
+        this.app.use(express.static('./release/view/frontend', {index: false}));
     }
 
     private routers() {
+        this.app.use('/', websiteRouter);
         this.app.use('/api', apiRouter);
     }
 

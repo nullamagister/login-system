@@ -80,6 +80,20 @@ var System = /** @class */ (function () {
             });
         });
     };
+    System.prototype.getUser = function (username) {
+        var _this = this;
+        return new Promise(function (fulfill, reject) {
+            _this.users.forEach(function (user) {
+                if (user.secret.username == username) {
+                    fulfill({
+                        code: 200,
+                        message: "a list of all regestered users",
+                        data: user
+                    });
+                }
+            });
+        });
+    };
     System.prototype.getUsers = function () {
         var _this = this;
         return new Promise(function (fulfill, reject) {
@@ -87,6 +101,22 @@ var System = /** @class */ (function () {
                 code: 200,
                 message: "a list of all regestered users",
                 data: _this.users
+            });
+        });
+    };
+    System.prototype.getInactiveUsers = function () {
+        var _this = this;
+        return new Promise(function (fulfill, reject) {
+            var inactiveUsers = [];
+            _this.users.forEach(function (user) {
+                if (!_this.activeUsers.includes(user)) {
+                    inactiveUsers.push(user);
+                }
+            });
+            fulfill({
+                code: 200,
+                message: "a list of all active users",
+                data: inactiveUsers
             });
         });
     };
@@ -200,7 +230,7 @@ var System = /** @class */ (function () {
     System.prototype.replaceUser = function (username, user) {
         var _this = this;
         return new Promise(function (fulfill, reject) { return __awaiter(_this, void 0, void 0, function () {
-            var wrappedOld, err_2, wrappedUser, _loop_1, this_1, i, state_1;
+            var wrappedOld, err_2, wrappedUser, i, replaced, _loop_1, this_1, i, state_1;
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -234,6 +264,24 @@ var System = /** @class */ (function () {
                                 });
                             }
                         }
+                        // Replace use in this.activeUsers
+                        for (i = 0; i < this.activeUsers.length; i++) {
+                            if (this.activeUsers[i].secret.username == username) {
+                                replaced = {
+                                    first_name: user.first_name,
+                                    last_name: user.last_name,
+                                    date_of_birth: user.date_of_birth,
+                                    gender: user.gender,
+                                    secret: {
+                                        username: user.secret.username,
+                                        password: user.secret.password,
+                                        email: user.secret.email
+                                    }
+                                };
+                                this.activeUsers[i] = replaced;
+                                break;
+                            }
+                        }
                         _loop_1 = function (i) {
                             if (this_1.users[i].secret.username == username) {
                                 var replaced_1 = {
@@ -247,6 +295,7 @@ var System = /** @class */ (function () {
                                         email: user.secret.email
                                     }
                                 };
+                                this_1.users[i] = replaced_1;
                                 this_1.mongodb.replaceUser(username, replaced_1).then(function () {
                                     _this.users[i] = replaced_1;
                                     fulfill({
@@ -260,7 +309,7 @@ var System = /** @class */ (function () {
                             }
                         };
                         this_1 = this;
-                        // Replace user
+                        // Replace user in this.users and database
                         for (i = 0; i < this.users.length; i++) {
                             state_1 = _loop_1(i);
                             if (state_1 === "break")
@@ -282,6 +331,13 @@ var System = /** @class */ (function () {
                     message: "the given username is not exist"
                 });
             }
+            // Inactivate
+            for (var i = 0; i < _this.activeUsers.length; i++) {
+                if (_this.activeUsers[i].secret.username == username) {
+                    _this.activeUsers.splice(i, 1);
+                    break;
+                }
+            }
             var _loop_2 = function (i) {
                 if (_this.users[i].secret.username == username) {
                     _this.mongodb.removeUser(username).then(function () {
@@ -296,6 +352,7 @@ var System = /** @class */ (function () {
                     return "break";
                 }
             };
+            // Remove
             for (var i = 0; i < _this.users.length; i++) {
                 var state_2 = _loop_2(i);
                 if (state_2 === "break")

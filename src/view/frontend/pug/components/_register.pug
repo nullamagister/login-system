@@ -1,0 +1,36 @@
+form#register.register(action="/register", method="post")
+
+    .form-group
+        label(for="first_name") First name 
+        input.form-control(type="text", name="first_name", required, autocomplete="off")
+
+    .form-group
+        label(for="last_name") Last name 
+        input.form-control(type="text", name="last_name", required, autocomplete="off")
+
+    .form-group
+        .form-check.form-check-inline        
+            input.form-check-input(type="radio" name="gender" value="mane", required)
+            label.form-check-label(for="gender") Male
+            input.form-check-input(type="radio", name="gender" value="female", required)
+            label.form-check-label(for="gender") Female 
+
+    .form-group
+        label(for="date_of_birth") Date of Birth
+        input.form-control(type="date", name="date_of_birth", required, autocomplete="off")
+
+    .form-group
+        label(for="username") Username 
+        input.form-control(type="text", name="username", required, autocomplete="off")
+
+    .form-group
+        label(for="password") Password
+        input.form-control(type="password", name="password", required)
+
+    .form-group
+        label(for="email") Email
+        input.form-control(type="email", name="email", aria-describedby="emailHelp", required, autocomplete="off")
+        small#emailHelp.form-text.text-muted We'll never share your email with anyone else. 
+
+    .form-group
+        input.btn.btn-primary(type="submit", value="register")

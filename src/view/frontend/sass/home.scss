@@ -3,8 +3,8 @@
 @import "helpers/placeholders";
 @import "helpers/mixins";
 @import "layout/header";
-@import "components/userself";
-@import "components/users";
+@import "components/selfUser";
+@import "components/inActiveUsers";
 @import "components/activeUsers";
 @import "pages/home";
 @import "layout/footer";

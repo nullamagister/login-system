@@ -1,0 +1,9 @@
+ul#inActiveUsers.inActiveUsers.list-unstyled
+    - for(let i = 0; i < offline.length; i++)
+        li.inActiveUser
+            - if (offline[i].gender == 'male')
+                img.male(src="imgs/male-avater.png", alt="avatar")
+            - else 
+                img.female(src="imgs/female-avater.png", alt="avatar")
+            span= offline[i].first_name + ' ' + offline[i].last_name
+            hr

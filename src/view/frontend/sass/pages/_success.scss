@@ -1,0 +1,4 @@
+.sucContent {
+    @extend %responseContent;
+    .success h2 .title{ text-transform: uppercase; color: #1e7e34 }
+}

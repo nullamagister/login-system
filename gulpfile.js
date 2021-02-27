@@ -5,18 +5,22 @@ const pugCompiler   = require('gulp-pug');
 const sourcemaps    = require('gulp-sourcemaps');
 const rename        = require('gulp-rename');
 const uglify        = require('gulp-uglify');
+const connect       = require('gulp-connect');
+const image         = require('gulp-image');
 
-//const imagemin = require('gulp-imagemin');
+const rootPath = "./src/view/frontend/";
+const distPath = "./release/view/frontend/"
+const port = 8000;
+const index = "index.html"
 
-const root = "./src/view/frontend/";
-const dist = "./release/view/frontend/"
-const fromRoot = (subPath) =>  root + subPath 
-const toDist   = (subPath) =>  dist + subPath 
+const fromRoot = (path) =>  rootPath + path 
+const toDist   = (path) =>  distPath + path
 
 function pug() {
     return src(fromRoot("pug/*.pug"))
         .pipe(pugCompiler({pretty: true}))
-        .pipe(dest(toDist("")));
+        .pipe(dest(toDist("")))
+        .pipe(connect.reload());
 }
 
 function sass() {
@@ -26,7 +30,8 @@ function sass() {
         .pipe(autoprefixer("last 3 versions"))
         .pipe(rename({suffix: ".min"}))
         .pipe(sourcemaps.write("maps"))
-        .pipe(dest(toDist("css")));
+        .pipe(dest(toDist("css")))
+        .pipe(connect.reload());
 }
 
 function js() {
@@ -35,26 +40,30 @@ function js() {
         .pipe(uglify())
         .pipe(rename({suffix: ".min"}))
         .pipe(sourcemaps.write("maps"))
-        .pipe(dest(toDist("js")));
+        .pipe(dest(toDist("js")))
+        .pipe(connect.reload());
 }
 
 function imgs() {
     return src(fromRoot("imgs/*.*"))
-        //.pipe(imagemin())
-        .pipe(dest(toDist("imgs")));
+        .pipe(image())
+        .pipe(dest(toDist("imgs")))
+        .pipe(connect.reload());
 }
 
 function fonts() {
     return src(fromRoot("webfonts/*.*"))
-        .pipe(dest(toDist("webfonts")));
+        .pipe(dest(toDist("webfonts")))
+        .pipe(connect.reload());
 }
 
 function watchEach() {
-    watch([fromRoot("pug/*.pug")], pug);
-    watch([fromRoot("sass/*.scss"), fromRoot("css/*.css")], sass);
-    watch(fromRoot("js/*.js"), js);
-    watch(fromRoot("imgs/*.*"), imgs)
-    watch(fromRoot("webfonts/*.*"), fonts);
+    connect.server({livereload: true, root: distPath, port, index});
+    watch([fromRoot("pug/*.pug"), fromRoot("pug/**/*.pug")], pug);
+    watch([fromRoot("sass/*.scss"), fromRoot("sass/**/*.scss"), fromRoot("css/*.css")], sass);
+    watch([fromRoot("js/*.js"), fromRoot("js/**/*.js")], js);
+    watch([fromRoot("imgs/*.*"), fromRoot("imgs/**/*.*")], imgs);
+    watch([fromRoot("webfonts/*.*"), fromRoot("webfonts/**/*.*")], fonts);
 }
 
 exports.pug   = pug;
@@ -65,3 +74,4 @@ exports.fonts = fonts;
 
 exports.compile = parallel(pug, sass, js, imgs, fonts);
 exports.watch   = watchEach;
+exports.default = series(parallel(pug, sass, js, imgs, fonts), watchEach);

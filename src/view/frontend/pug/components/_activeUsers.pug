@@ -1,0 +1,9 @@
+ul#activeUsers.activeUsers.list-unstyled
+    - for(let i = 0; i < online.length; i++)
+        li.activeUser
+            - if (online[i].gender == 'male')
+                img.male(src="imgs/male-avater.png", alt="avatar")
+            - else 
+                img.female(src="imgs/female-avater.png", alt="avatar")
+            span= online[i].first_name + ' ' + online[i].last_name
+            hr
