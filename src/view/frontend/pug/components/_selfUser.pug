@@ -10,11 +10,18 @@ form#selfuser.selfUser
         input.form-control.col(type="text", name="last", value=user.last_name, required, disabled, autocomplete="off")
 
     .form-group
-        .form-check.form-check-inline        
-            input.form-check-input(type="radio", name="gender" value="male", required, disabled checked)
-            label.form-check-label(for="gender") Male
-            input.form-check-input(type="radio", name="gender" value="female", required, disabled)
-            label.form-check-label(for="gender") Female 
+        .form-check.form-check-inline
+            - if (user.gender == 'male')
+                input.form-check-input(type="radio", name="gender" value="male", required, disabled checked)
+                label.form-check-label(for="gender") Male
+                input.form-check-input(type="radio", name="gender" value="female", required, disabled)
+                label.form-check-label(for="gender") Female 
+            - else
+                input.form-check-input(type="radio", name="gender" value="male", required, disabled)
+                label.form-check-label(for="gender") Male
+                input.form-check-input(type="radio", name="gender" value="female", required, disabled checked)
+                label.form-check-label(for="gender") Female 
+
 
     .form-group
         label(for="date_of_birth") Date of Birth        

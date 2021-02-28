@@ -1,5 +1,5 @@
-import IResponse from "./IResponse";
-import { IUser } from "./ISystem";
+import IResponse from "../controller/IResponse";
+import { IUser } from "../controller/ISystem";
 import IValidate from "./IValidator";
 
 /**

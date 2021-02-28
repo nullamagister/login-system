@@ -40,7 +40,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var Mongodb_1 = __importDefault(require("../model/Mongodb"));
-var Validate_1 = __importDefault(require("./Validate"));
+var LodashCloneAlgo_1 = __importDefault(require("./LodashCloneAlgo"));
 /**
  * This is our class of our Login System
  */
@@ -49,17 +49,23 @@ var System = /** @class */ (function () {
      * Connect to database.
      * Retrieve users from database and store it in memory.
      */
-    function System() {
+    function System(db) {
         var _this = this;
-        this.databaseURL = 'mongodb://127.0.0.1:27017/myData';
-        this.mongodb = new Mongodb_1.default(this.databaseURL);
-        this.validate = new Validate_1.default();
+        this.db = db;
+        this.mongodb = new Mongodb_1.default(this.db);
+        this.cloneAlgo = new LodashCloneAlgo_1.default();
         this.users = [];
         this.activeUsers = [];
         this.connectDatabase().then(function () {
             _this.mongodb.getUsers().then(function (res) { return _this.users = res.data; }, function (err) { return _this.users = []; });
         });
     }
+    System.getSystem = function (db) {
+        if (this.system == null || this.system == undefined) {
+            this.system = new System(db);
+        }
+        return this.system;
+    };
     System.prototype.connectDatabase = function () {
         var _this = this;
         return new Promise(function (fulfill, reject) {
@@ -88,7 +94,7 @@ var System = /** @class */ (function () {
                     fulfill({
                         code: 200,
                         message: "a list of all regestered users",
-                        data: user
+                        data: _this.cloneAlgo.user(user)
                     });
                 }
             });
@@ -100,7 +106,17 @@ var System = /** @class */ (function () {
             fulfill({
                 code: 200,
                 message: "a list of all regestered users",
-                data: _this.users
+                data: _this.cloneAlgo.users(_this.users)
+            });
+        });
+    };
+    System.prototype.getActiveUsers = function () {
+        var _this = this;
+        return new Promise(function (fulfill, reject) {
+            fulfill({
+                code: 200,
+                message: "a list of all active users",
+                data: _this.cloneAlgo.users(_this.activeUsers)
             });
         });
     };
@@ -116,17 +132,7 @@ var System = /** @class */ (function () {
             fulfill({
                 code: 200,
                 message: "a list of all active users",
-                data: inactiveUsers
-            });
-        });
-    };
-    System.prototype.getActiveUsers = function () {
-        var _this = this;
-        return new Promise(function (fulfill, reject) {
-            fulfill({
-                code: 200,
-                message: "a list of all active users",
-                data: _this.activeUsers
+                data: _this.cloneAlgo.users(inactiveUsers)
             });
         });
     };
@@ -190,133 +196,106 @@ var System = /** @class */ (function () {
     System.prototype.addUser = function (user) {
         var _this = this;
         return new Promise(function (fulfill, reject) { return __awaiter(_this, void 0, void 0, function () {
-            var username_1, err_1;
+            var username;
             var _this = this;
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, this.validate.user(user)];
-                    case 1:
-                        _a.sent();
-                        username_1 = user.secret.username;
-                        if (this.users.filter(function (user) { return user.secret.username == username_1; }).length == 0) {
-                            this.mongodb.addUser(user).then(function () {
-                                _this.users.push(user);
-                                fulfill({
-                                    code: 200,
-                                    message: "registered successfully"
-                                });
-                            }, function (err) {
-                                reject(err);
-                            });
-                        }
-                        else {
-                            reject({
-                                code: 400,
-                                message: "the given username has already exist"
-                            });
-                        }
-                        return [3 /*break*/, 3];
-                    case 2:
-                        err_1 = _a.sent();
-                        reject(err_1);
-                        return [3 /*break*/, 3];
-                    case 3: return [2 /*return*/];
+                username = user.secret.username;
+                if (this.users.filter(function (user) { return user.secret.username == username; }).length == 0) {
+                    this.mongodb.addUser(user).then(function () {
+                        _this.users.push(user);
+                        fulfill({
+                            code: 200,
+                            message: "registered successfully"
+                        });
+                    }, function (err) {
+                        reject(err);
+                    });
                 }
+                else {
+                    reject({
+                        code: 400,
+                        message: "the given username has already exist"
+                    });
+                }
+                return [2 /*return*/];
             });
         }); });
     };
     System.prototype.replaceUser = function (username, user) {
         var _this = this;
         return new Promise(function (fulfill, reject) { return __awaiter(_this, void 0, void 0, function () {
-            var wrappedOld, err_2, wrappedUser, i, replaced, _loop_1, this_1, i, state_1;
+            var wrappedOld, wrappedUser, i, replaced, _loop_1, this_1, i, state_1;
             var _this = this;
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        wrappedOld = this.users.filter(function (user) { return user.secret.username == username; });
-                        // check whether the user to be updated exists
-                        if (wrappedOld.length != 1) {
-                            reject({
-                                code: 400,
-                                message: "the given username is not exist"
-                            });
-                        }
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 3, , 4]);
-                        return [4 /*yield*/, this.validate.user(user)];
-                    case 2:
-                        _a.sent();
-                        return [3 /*break*/, 4];
-                    case 3:
-                        err_2 = _a.sent();
-                        reject(err_2);
-                        return [3 /*break*/, 4];
-                    case 4:
-                        wrappedUser = this.users.filter(function (_user) { return _user.secret.username == user.secret.username; });
-                        if (wrappedUser.length == 1) {
-                            if (wrappedOld[0].secret.username != user.secret.username) {
-                                reject({
-                                    code: 400,
-                                    message: "the given username is already exists"
-                                });
-                            }
-                        }
-                        // Replace use in this.activeUsers
-                        for (i = 0; i < this.activeUsers.length; i++) {
-                            if (this.activeUsers[i].secret.username == username) {
-                                replaced = {
-                                    first_name: user.first_name,
-                                    last_name: user.last_name,
-                                    date_of_birth: user.date_of_birth,
-                                    gender: user.gender,
-                                    secret: {
-                                        username: user.secret.username,
-                                        password: user.secret.password,
-                                        email: user.secret.email
-                                    }
-                                };
-                                this.activeUsers[i] = replaced;
-                                break;
-                            }
-                        }
-                        _loop_1 = function (i) {
-                            if (this_1.users[i].secret.username == username) {
-                                var replaced_1 = {
-                                    first_name: user.first_name,
-                                    last_name: user.last_name,
-                                    date_of_birth: user.date_of_birth,
-                                    gender: user.gender,
-                                    secret: {
-                                        username: user.secret.username,
-                                        password: user.secret.password,
-                                        email: user.secret.email
-                                    }
-                                };
-                                this_1.users[i] = replaced_1;
-                                this_1.mongodb.replaceUser(username, replaced_1).then(function () {
-                                    _this.users[i] = replaced_1;
-                                    fulfill({
-                                        code: 200,
-                                        message: "update successfully"
-                                    });
-                                }, function (err) {
-                                    reject(err);
-                                });
-                                return "break";
+                wrappedOld = this.users.filter(function (user) { return user.secret.username == username; });
+                // check whether the user to be updated exists
+                if (wrappedOld.length != 1) {
+                    reject({
+                        code: 400,
+                        message: "the given username is not exist"
+                    });
+                }
+                wrappedUser = this.users.filter(function (_user) { return _user.secret.username == user.secret.username; });
+                if (wrappedUser.length == 1) {
+                    if (wrappedOld[0].secret.username != user.secret.username) {
+                        reject({
+                            code: 400,
+                            message: "the given username is already exists"
+                        });
+                    }
+                }
+                // Replace user in this.activeUsers
+                for (i = 0; i < this.activeUsers.length; i++) {
+                    if (this.activeUsers[i].secret.username == username) {
+                        replaced = {
+                            first_name: user.first_name,
+                            last_name: user.last_name,
+                            date_of_birth: user.date_of_birth,
+                            gender: user.gender,
+                            secret: {
+                                username: user.secret.username,
+                                password: user.secret.password,
+                                email: user.secret.email
                             }
                         };
-                        this_1 = this;
-                        // Replace user in this.users and database
-                        for (i = 0; i < this.users.length; i++) {
-                            state_1 = _loop_1(i);
-                            if (state_1 === "break")
-                                break;
-                        }
-                        return [2 /*return*/];
+                        this.activeUsers[i] = replaced;
+                        break;
+                    }
                 }
+                _loop_1 = function (i) {
+                    if (this_1.users[i].secret.username == username) {
+                        var replaced_1 = {
+                            first_name: user.first_name,
+                            last_name: user.last_name,
+                            date_of_birth: user.date_of_birth,
+                            gender: user.gender,
+                            secret: {
+                                username: user.secret.username,
+                                password: user.secret.password,
+                                email: user.secret.email
+                            }
+                        };
+                        this_1.users[i] = replaced_1;
+                        this_1.mongodb.replaceUser(username, replaced_1).then(function () {
+                            _this.users[i] = replaced_1;
+                            fulfill({
+                                code: 200,
+                                message: "update successfully"
+                            });
+                        }, function (err) {
+                            reject(err);
+                        });
+                        return "break";
+                    }
+                };
+                this_1 = this;
+                // Replace user in this.users and database
+                for (i = 0; i < this.users.length; i++) {
+                    state_1 = _loop_1(i);
+                    if (state_1 === "break")
+                        break;
+                }
+                return [2 /*return*/];
             });
         }); });
     };

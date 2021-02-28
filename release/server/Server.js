@@ -9,25 +9,25 @@ var body_parser_1 = __importDefault(require("body-parser"));
 var cookie_parser_1 = __importDefault(require("cookie-parser"));
 var multer_1 = __importDefault(require("multer"));
 var express_session_1 = __importDefault(require("express-session"));
-var System_1 = __importDefault(require("../controller/System"));
-var Api_1 = __importDefault(require("./routers/Api"));
-var Website_1 = __importDefault(require("./routers/Website"));
+var ApiRouter_1 = __importDefault(require("./routers/ApiRouter"));
+var WebRouter_1 = __importDefault(require("./routers/WebRouter"));
 var Server = /** @class */ (function () {
-    function Server(port, host) {
+    function Server(port, host, db) {
         this.port = port;
         this.host = host;
         this.app = express_1.default();
         this.httpServer = http_1.default.createServer(this.app);
+        Server.db = db;
         this.middlewares();
         this.routers();
     }
-    Server.prototype.start = function () {
+    Server.prototype.listen = function () {
         var _this = this;
         this.httpServer.listen(this.port, this.host, function () {
             console.log("Http server is running at: " + _this.host + ":" + _this.port);
         });
     };
-    Server.prototype.run = function () {
+    Server.prototype.close = function () {
         this.httpServer.close(function (err) {
             if (err) {
                 return err;
@@ -35,8 +35,8 @@ var Server = /** @class */ (function () {
             console.log('Server is closed');
         });
     };
-    Server.getSystem = function () {
-        return Server.system;
+    Server.getDB = function () {
+        return Server.db;
     };
     Server.prototype.middlewares = function () {
         // Body Parser
@@ -57,8 +57,13 @@ var Server = /** @class */ (function () {
         this.app.use(express_1.default.static('./release/view/frontend', { index: false }));
     };
     Server.prototype.routers = function () {
-        this.app.use('/', Website_1.default);
-        this.app.use('/api', Api_1.default);
+        this.app.use('/', WebRouter_1.default);
+        this.app.use('/api', ApiRouter_1.default);
+        this.app.get('*', function (req, res) {
+            console.log("GET: *");
+            console.log("Render: error.pug");
+            res.render('error', { message: 'The page that you tries to reach is Not Found.' });
+        });
     };
     Server.prototype.secretKeyGenerator = function () {
         var symobols = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
@@ -76,7 +81,6 @@ var Server = /** @class */ (function () {
         var maxDigit = 10000;
         return (Math.floor(Math.random() * maxDigit) % maxNumber);
     };
-    Server.system = new System_1.default();
     return Server;
 }());
 exports.default = Server;

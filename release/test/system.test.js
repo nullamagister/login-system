@@ -41,6 +41,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var ISystem_1 = require("../controller/ISystem");
 var System_1 = __importDefault(require("../controller/System"));
+var db = 'mongodb://127.0.0.1:27017/myTestData';
 describe("Login User", function () {
     var system;
     var user;
@@ -48,7 +49,7 @@ describe("Login User", function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    system = System_1.default.getSystem();
+                    system = System_1.default.getSystem(db);
                     user = {
                         first_name: "myNameIs",
                         last_name: "myNameIs",
@@ -165,7 +166,7 @@ describe("Logout User", function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    system = System_1.default.getSystem();
+                    system = System_1.default.getSystem(db);
                     user = {
                         first_name: "myNameIs",
                         last_name: "myNameIs",
@@ -243,7 +244,7 @@ describe("Add User", function () {
     var invalidUser;
     beforeAll(function () { return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_a) {
-            system = System_1.default.getSystem();
+            system = System_1.default.getSystem(db);
             validUser = {
                 first_name: "myNameIs",
                 last_name: "myNameIs",
@@ -345,7 +346,7 @@ describe("Modify User", function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    system = System_1.default.getSystem();
+                    system = System_1.default.getSystem(db);
                     validUser1 = {
                         first_name: "myNameIs",
                         last_name: "myNameIs",
@@ -557,7 +558,7 @@ describe("Delete User", function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    system = System_1.default.getSystem();
+                    system = System_1.default.getSystem(db);
                     user = {
                         first_name: "myNameIs",
                         last_name: "myNameIs",

@@ -1,16 +1,18 @@
 import Mongodb from "../model/Mongodb";
+import ICloneAlgo from "./ICloneAlgo";
 import IResponse from "./IResponse";
 import ISystem, { IUser } from "./ISystem";
-import Validate from "./Validate";
+import LodashCloneAlgo from "./LodashCloneAlgo";
 
 /**
  * This is our class of our Login System
  */
 export default class System implements ISystem{
-    private readonly databaseURL = 'mongodb://127.0.0.1:27017/myData';
+    private static system: System;
 
+    private db: string;
+    private cloneAlgo: ICloneAlgo;
     private mongodb: Mongodb;
-    private validate: Validate;
     private users: IUser[];
     private activeUsers: IUser[];
 
@@ -18,15 +20,24 @@ export default class System implements ISystem{
      * Connect to database.
      * Retrieve users from database and store it in memory.
      */
-    constructor() {
-        this.mongodb = new Mongodb(this.databaseURL);
-        this.validate = new Validate();
+    private constructor(db: string) {
+        this.db = db
+        this.mongodb = new Mongodb(this.db);
+        this.cloneAlgo = new LodashCloneAlgo();
         this.users = [];
         this.activeUsers = [];
         
         this.connectDatabase().then(() => {
             this.mongodb.getUsers().then((res) => this.users = res.data, (err) => this.users = []);
         });
+    }
+
+    public static getSystem(db: string): System{
+        if (this.system == null || this.system == undefined) {
+            this.system = new System(db)
+        }
+
+        return this.system;
     }
 
     public connectDatabase(): Promise<IResponse> {
@@ -56,7 +67,7 @@ export default class System implements ISystem{
                     fulfill({
                         code: 200,
                         message: "a list of all regestered users",
-                        data: user
+                        data: this.cloneAlgo.user(user)
                     });
                 }
             });
@@ -68,7 +79,17 @@ export default class System implements ISystem{
             fulfill({
                 code: 200,
                 message: "a list of all regestered users",
-                data: this.users
+                data: this.cloneAlgo.users(this.users)
+            });
+        });
+    }
+
+    public getActiveUsers(): Promise<IResponse> {
+        return new Promise((fulfill, reject) => {
+            fulfill({
+                code: 200,
+                message: "a list of all active users",
+                data: this.cloneAlgo.users(this.activeUsers)
             });
         });
     }
@@ -85,17 +106,7 @@ export default class System implements ISystem{
             fulfill({
                 code: 200,
                 message: "a list of all active users",
-                data: inactiveUsers
-            });
-        });
-    }
-
-    public getActiveUsers(): Promise<IResponse> {
-        return new Promise((fulfill, reject) => {
-            fulfill({
-                code: 200,
-                message: "a list of all active users",
-                data: this.activeUsers
+                data: this.cloneAlgo.users(inactiveUsers)
             });
         });
     }
@@ -131,7 +142,6 @@ export default class System implements ISystem{
                     message: "the given password is incorrect"
                 });
             }
-            
         });
     }
     
@@ -160,29 +170,22 @@ export default class System implements ISystem{
     
     public addUser(user: IUser): Promise<IResponse> {
         return new Promise(async (fulfill, reject) => {
-            try {
-                await this.validate.user(user);
-                const username = user.secret.username;
-                if (this.users.filter((user) => user.secret.username == username).length == 0) {
-                    this.mongodb.addUser(user).then(() => {
-                        this.users.push(user);
-                        fulfill({
-                            code: 200,
-                            message: "registered successfully"
-                        });
-                    }, (err) => {
-                        reject(err);
-                    })
-                    
-                } else {
-                    reject({
-                        code: 400,
-                        message: "the given username has already exist"
+            const username = user.secret.username;
+            if (this.users.filter((user) => user.secret.username == username).length == 0) {
+                this.mongodb.addUser(user).then(() => {
+                    this.users.push(user);
+                    fulfill({
+                        code: 200,
+                        message: "registered successfully"
                     });
-                }
-
-            } catch (err) {
-                reject(err);
+                }, (err) => {
+                    reject(err);
+                })
+            } else {
+                reject({
+                    code: 400,
+                    message: "the given username has already exist"
+                });
             }
         });
     }
@@ -199,13 +202,6 @@ export default class System implements ISystem{
                     message: "the given username is not exist"
                 });
             }
-
-            // Check the updated data validation
-            try {
-                await this.validate.user(user);
-            } catch (err) {
-                reject(err);
-            } 
             
             // Has a new existed username
             const wrappedUser = 
@@ -220,7 +216,7 @@ export default class System implements ISystem{
                 }
             }
 
-            // Replace use in this.activeUsers
+            // Replace user in this.activeUsers
             for (let i = 0; i < this.activeUsers.length; i++){
                 if (this.activeUsers[i].secret.username == username) {
                     const replaced: IUser = {

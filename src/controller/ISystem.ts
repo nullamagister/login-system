@@ -18,6 +18,13 @@ export default interface ISystem {
     disconnectDatabase(): Promise<IResponse>;
 
     /**
+     * get the user object the has the given username
+     * @param username the username of the user
+     * @returns the user object of the given username
+     */
+    getUser(username: string): Promise<IResponse>;
+
+    /**
      * Get the all registered users
      * @returns code: 200, data: list of users
      */
@@ -28,6 +35,12 @@ export default interface ISystem {
      * @returns code: 200, data: list of active users
      */
     getActiveUsers(): Promise<IResponse>;
+
+    /**
+     * Get the all inActive users
+     * @returns code: 200, data: list of active users
+     */
+    getInactiveUsers(): Promise<IResponse>;
 
     /**
      * Login the user with the given username and password
@@ -83,8 +96,8 @@ export interface IUser {
  *  - Female
  */
 export enum Gender{
-    Male,
-    Female
+    Male = "Male",
+    Female = "Female"
 }
 
 /**

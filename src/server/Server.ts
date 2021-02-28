@@ -4,45 +4,46 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import multer from 'multer';
 import session from 'express-session';
-import System from '../controller/System';
-import apiRouter from './routers/Api'
-import websiteRouter from './routers/Website';
+import apiRouter from './routers/ApiRouter'
+import webRouter from './routers/WebRouter';
+import IServer from './IServer';
 
-export default class Server {
-    private static system: System = new System();
+export default class Server implements IServer{
+    private static db: string;
 
     private port: number;
     private host: string;
     private app: express.Express;
     private httpServer: http.Server;
 
-    constructor(port: number, host: string) {
+    constructor(port: number, host: string, db: string) {
         this.port = port;
         this.host = host;
         this.app = express();
         this.httpServer = http.createServer(this.app);
+        Server.db = db
         this.middlewares();
         this.routers();
     }
 
-    public start() {
+    public listen(): void {
         this.httpServer.listen(this.port, this.host, () => {
             console.log("Http server is running at: " + this.host + ":" + this.port);
         })
     }
 
-    public run() {
+    public close(): void {
         this.httpServer.close((err) => {
             if (err) { return err }
             console.log('Server is closed');
         })
     }
 
-    public static  getSystem(): System {
-        return Server.system;
+    public static getDB(): string {
+        return Server.db
     }
 
-    private middlewares() {
+    private middlewares(): void {
         // Body Parser
         this.app.use(bodyParser.urlencoded({extended: false}));
         this.app.use(bodyParser.json());
@@ -66,9 +67,16 @@ export default class Server {
         this.app.use(express.static('./release/view/frontend', {index: false}));
     }
 
-    private routers() {
-        this.app.use('/', websiteRouter);
+    private routers(): void {
+        this.app.use('/', webRouter);
         this.app.use('/api', apiRouter);
+        
+        this.app.get('*', (req, res) => {
+            console.log("GET: *");
+            console.log("Render: error.pug");
+            res.render('error', {message: 'The page that you tries to reach is Not Found.'});
+          
+        });
     }
 
     private secretKeyGenerator(): string {

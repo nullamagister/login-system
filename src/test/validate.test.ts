@@ -1,5 +1,5 @@
 import { Gender, IUser } from '../controller/ISystem';
-import Validator from '../controller/Validate'
+import Validator from '../view/Validate'
 
 describe("Valid Users", () => {
     let validator: Validator;

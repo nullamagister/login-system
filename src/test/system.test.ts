@@ -1,12 +1,14 @@
 import { Gender, IUser } from '../controller/ISystem';
 import System from '../controller/System';
 
+const db: string = 'mongodb://127.0.0.1:27017/myTestData';
+
 describe("Login User", () => {
     let system: System;
     let user: IUser;
 
     beforeEach(async () => {
-        system = new System();
+        system = System.getSystem(db); 
         user = {
             first_name: "myNameIs",
             last_name: "myNameIs",
@@ -70,7 +72,7 @@ describe("Logout User", () => {
     let user: IUser;
 
     beforeEach(async () => {
-        system = new System(); 
+        system = System.getSystem(db); 
         user = {
             first_name: "myNameIs",
             last_name: "myNameIs",
@@ -117,7 +119,7 @@ describe("Add User", () => {
     let invalidUser: IUser;
 
     beforeAll(async () => {
-        system = new System();
+        system = System.getSystem(db); 
         validUser = {
             first_name: "myNameIs",
             last_name: "myNameIs",
@@ -181,7 +183,7 @@ describe("Modify User", () => {
     let validUser2: IUser;
 
     beforeEach(async () => {
-        system = new System(); 
+        system = System.getSystem(db); 
         validUser1 = {
             first_name: "myNameIs",
             last_name: "myNameIs",
@@ -327,7 +329,7 @@ describe("Delete User", () => {
     let user: IUser;
 
     beforeEach(async () => {
-        system = new System(); 
+        system = System.getSystem(db); 
         user = {
             first_name: "myNameIs",
             last_name: "myNameIs",

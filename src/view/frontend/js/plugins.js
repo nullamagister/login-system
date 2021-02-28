@@ -7,16 +7,18 @@ $(function() {
     });
 
     // Setup hide/display password
-    $(".fa-eye-slash").on("click", function () {
+    $(".fa-eye-slash").on("click", function (e) {
+        const element = e.target
         $(this).hide();
         $(this).next(".fa-eye").show();
-        $(this).prevUntil("input").attr('type', 'text');
+        $(element).prev("input").attr('type', 'text');
     });
 
-    $(".fa-eye").click(function () {
+    $(".fa-eye").click(function (e) {
+        const element = e.target
         $(this).hide();
         $(this).prev(".fa-eye-slash").show();
-        $(this).prevUntil("input").attr('type', 'password');
+        $(element).prev(".fa-eye-slash").prev("input").attr('type', 'password');
     });
 
     //Setup online/offline section height & scrolling
@@ -39,8 +41,7 @@ $(function() {
     const hdHeghit = $("header").outerHeight(true);
     const ftHeight = $("footer").outerHeight(true);
     const dlHeight = (hdHeghit + ftHeight);
-    $(".errContent, .errContent").css('height', 'calc(100vh - ' +dlHeight+ 'px)');
-
+    $(".errContent, .sucContent").css('height', 'calc(100vh - ' +dlHeight+ 'px)');    
 
     // Customize update form
     $(".updateBtn").one('click', function(e) {
