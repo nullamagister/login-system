@@ -42,231 +42,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var ISystem_1 = require("../controller/ISystem");
 var System_1 = __importDefault(require("../controller/System"));
 var db = 'mongodb://127.0.0.1:27017/myTestData';
-describe("Login User", function () {
+describe("Login System", function () {
     var system;
-    var user;
-    beforeEach(function () { return __awaiter(void 0, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    system = System_1.default.getSystem(db);
-                    user = {
-                        first_name: "myNameIs",
-                        last_name: "myNameIs",
-                        date_of_birth: "May 23, 1992",
-                        gender: ISystem_1.Gender.Male,
-                        secret: {
-                            username: "myValidUser1",
-                            password: "myPasswoArd",
-                            email: "myEmail@website.com"
-                        }
-                    };
-                    return [4 /*yield*/, system.addUser(user)];
-                case 1:
-                    _a.sent();
-                    return [2 /*return*/];
-            }
-        });
-    }); });
-    afterEach(function () { return __awaiter(void 0, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, system.disconnectDatabase()];
-                case 1:
-                    _a.sent();
-                    return [2 /*return*/];
-            }
-        });
-    }); });
-    it("Valid Login", function () { return __awaiter(void 0, void 0, void 0, function () {
-        var result, err_1;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, system.login(user.secret.username, user.secret.password)];
-                case 1:
-                    result = _a.sent();
-                    expect(result.code).toBe(200);
-                    return [3 /*break*/, 3];
-                case 2:
-                    err_1 = _a.sent();
-                    fail();
-                    return [3 /*break*/, 3];
-                case 3: return [2 /*return*/];
-            }
-        });
-    }); });
-    it("Invalid Login: username", function () { return __awaiter(void 0, void 0, void 0, function () {
-        var err_2;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, system.login("NotFoundUsnm", user.secret.password)];
-                case 1:
-                    _a.sent();
-                    fail();
-                    return [3 /*break*/, 3];
-                case 2:
-                    err_2 = _a.sent();
-                    expect(err_2.code).toBe(400);
-                    return [3 /*break*/, 3];
-                case 3: return [2 /*return*/];
-            }
-        });
-    }); });
-    it("Invalid Login: password", function () { return __awaiter(void 0, void 0, void 0, function () {
-        var err_3;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, system.login(user.secret.username, "NotFoundPass")];
-                case 1:
-                    _a.sent();
-                    fail();
-                    return [3 /*break*/, 3];
-                case 2:
-                    err_3 = _a.sent();
-                    expect(err_3.code).toBe(400);
-                    return [3 /*break*/, 3];
-                case 3: return [2 /*return*/];
-            }
-        });
-    }); });
-    it("Invalid Login: already logged in", function () { return __awaiter(void 0, void 0, void 0, function () {
-        var result, err_4;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 3, , 4]);
-                    return [4 /*yield*/, system.login(user.secret.username, user.secret.password)];
-                case 1:
-                    result = _a.sent();
-                    expect(result.code).toBe(200);
-                    return [4 /*yield*/, system.login(user.secret.username, user.secret.password)];
-                case 2:
-                    _a.sent();
-                    fail();
-                    return [3 /*break*/, 4];
-                case 3:
-                    err_4 = _a.sent();
-                    expect(err_4.code).toBe(400);
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
-            }
-        });
-    }); });
-});
-describe("Logout User", function () {
-    var system;
-    var user;
-    beforeEach(function () { return __awaiter(void 0, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    system = System_1.default.getSystem(db);
-                    user = {
-                        first_name: "myNameIs",
-                        last_name: "myNameIs",
-                        date_of_birth: "May 23, 1992",
-                        gender: ISystem_1.Gender.Male,
-                        secret: {
-                            username: "myValidUser1",
-                            password: "myPasswoArd",
-                            email: "myEmail@website.com"
-                        }
-                    };
-                    return [4 /*yield*/, system.addUser(user)];
-                case 1:
-                    _a.sent();
-                    return [4 /*yield*/, system.login(user.secret.username, user.secret.password)];
-                case 2:
-                    _a.sent();
-                    return [2 /*return*/];
-            }
-        });
-    }); });
-    afterEach(function () { return __awaiter(void 0, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, system.disconnectDatabase()];
-                case 1:
-                    _a.sent();
-                    return [2 /*return*/];
-            }
-        });
-    }); });
-    it("Valid Logout", function () { return __awaiter(void 0, void 0, void 0, function () {
-        var result, err_5;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, system.logout(user.secret.username)];
-                case 1:
-                    result = _a.sent();
-                    expect(result.code).toBe(200);
-                    return [3 /*break*/, 3];
-                case 2:
-                    err_5 = _a.sent();
-                    console.log(err_5);
-                    fail();
-                    return [3 /*break*/, 3];
-                case 3: return [2 /*return*/];
-            }
-        });
-    }); });
-    it("Invalid Logout: usrname", function () { return __awaiter(void 0, void 0, void 0, function () {
-        var err_6;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, system.logout("NotFound")];
-                case 1:
-                    _a.sent();
-                    fail();
-                    return [3 /*break*/, 3];
-                case 2:
-                    err_6 = _a.sent();
-                    expect(err_6.code).toBe(400);
-                    return [3 /*break*/, 3];
-                case 3: return [2 /*return*/];
-            }
-        });
-    }); });
-});
-describe("Add User", function () {
-    var system;
-    var validUser;
-    var invalidUser;
     beforeAll(function () { return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_a) {
             system = System_1.default.getSystem(db);
-            validUser = {
-                first_name: "myNameIs",
-                last_name: "myNameIs",
-                date_of_birth: "May 23, 1992",
-                gender: ISystem_1.Gender.Male,
-                secret: {
-                    username: "myValidUser1",
-                    password: "myPasswoArd",
-                    email: "myEmail@website.com"
-                }
-            };
-            invalidUser = {
-                first_name: "myNameIs",
-                last_name: "myNameIs",
-                date_of_birth: "Junuary 33, 1992",
-                gender: ISystem_1.Gender.Male,
-                secret: {
-                    username: "myInValidUser1",
-                    password: "myPassworWd",
-                    email: "myEmail@website.com"
-                }
-            };
             return [2 /*return*/];
         });
     }); });
@@ -280,349 +60,504 @@ describe("Add User", function () {
             }
         });
     }); });
-    it("Valid Addition", function () { return __awaiter(void 0, void 0, void 0, function () {
-        var result, err_7;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, system.addUser(validUser)];
-                case 1:
-                    result = _a.sent();
-                    expect(result.code).toBe(200);
-                    return [3 /*break*/, 3];
-                case 2:
-                    err_7 = _a.sent();
-                    fail();
-                    return [3 /*break*/, 3];
-                case 3: return [2 /*return*/];
-            }
-        });
-    }); });
-    it("Invalid Addition: Validation", function () { return __awaiter(void 0, void 0, void 0, function () {
-        var result, err_8;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, system.addUser(invalidUser)];
-                case 1:
-                    result = _a.sent();
-                    fail();
-                    return [3 /*break*/, 3];
-                case 2:
-                    err_8 = _a.sent();
-                    expect(err_8.code).toBe(402);
-                    return [3 /*break*/, 3];
-                case 3: return [2 /*return*/];
-            }
-        });
-    }); });
-    it("Invalid Addition: already-exists", function () { return __awaiter(void 0, void 0, void 0, function () {
-        var result, err_9;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, system.addUser(validUser)];
-                case 1:
-                    result = _a.sent();
-                    fail();
-                    return [3 /*break*/, 3];
-                case 2:
-                    err_9 = _a.sent();
-                    expect(err_9.code).toBe(400);
-                    return [3 /*break*/, 3];
-                case 3: return [2 /*return*/];
-            }
-        });
-    }); });
-});
-describe("Modify User", function () {
-    var system;
-    var validUser1;
-    var validUser2;
-    beforeEach(function () { return __awaiter(void 0, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    system = System_1.default.getSystem(db);
-                    validUser1 = {
-                        first_name: "myNameIs",
-                        last_name: "myNameIs",
-                        date_of_birth: "May 23, 1992",
-                        gender: ISystem_1.Gender.Male,
-                        secret: {
-                            username: "myValidUser1",
-                            password: "myPassword",
-                            email: "myEmail@website.com"
-                        }
-                    };
-                    validUser2 = {
-                        first_name: "myNameIs",
-                        last_name: "myNameIs",
-                        date_of_birth: "January 28, 1992",
-                        gender: ISystem_1.Gender.Male,
-                        secret: {
-                            username: "myValidUser2",
-                            password: "myPassword",
-                            email: "myEmail@website.com"
-                        }
-                    };
-                    return [4 /*yield*/, system.addUser(validUser1)];
-                case 1:
-                    _a.sent();
-                    return [4 /*yield*/, system.addUser(validUser2)];
-                case 2:
-                    _a.sent();
-                    return [2 /*return*/];
-            }
-        });
-    }); });
-    afterEach(function () { return __awaiter(void 0, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, system.disconnectDatabase()];
-                case 1:
-                    _a.sent();
-                    return [2 /*return*/];
-            }
-        });
-    }); });
-    it("Valid Modification: with new username", function () { return __awaiter(void 0, void 0, void 0, function () {
-        var username, result, err_10;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    username = validUser1.secret.username;
-                    _a.label = 1;
-                case 1:
-                    _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, system.replaceUser(username, {
-                            first_name: "modifiedName",
-                            last_name: "ModifiedName",
-                            date_of_birth: "April 7, 2000",
-                            gender: ISystem_1.Gender.Female,
+    describe("Login User", function () {
+        var user;
+        beforeAll(function () { return __awaiter(void 0, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        user = {
+                            first_name: "myNameIs",
+                            last_name: "myNameIs",
+                            date_of_birth: "May 23, 1992",
+                            gender: ISystem_1.Gender.Male,
                             secret: {
-                                username: "ModifiedUN",
-                                password: "ModifiedPass",
-                                email: "Modified@website.com"
+                                username: "myValidUser",
+                                password: "myPasswoArd",
+                                email: "myEmail@website.com"
                             }
-                        })];
-                case 2:
-                    result = _a.sent();
-                    expect(result.code).toBe(200);
-                    return [3 /*break*/, 4];
-                case 3:
-                    err_10 = _a.sent();
-                    fail();
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
-            }
-        });
-    }); });
-    it("Valid Modification: without new username", function () { return __awaiter(void 0, void 0, void 0, function () {
-        var username, result, err_11;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    username = validUser1.secret.username;
-                    _a.label = 1;
-                case 1:
-                    _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, system.replaceUser(username, {
-                            first_name: "modifiedName",
-                            last_name: "ModifiedName",
-                            date_of_birth: "April 7, 2000",
-                            gender: ISystem_1.Gender.Female,
+                        };
+                        return [4 /*yield*/, system.addUser(user)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+        afterAll(function () { return __awaiter(void 0, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, system.removeUser(user.secret.username)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+        it("Valid Login", function () { return __awaiter(void 0, void 0, void 0, function () {
+            var result, err_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, system.login(user.secret.username, user.secret.password)];
+                    case 1:
+                        result = _a.sent();
+                        expect(result.code).toBe(200);
+                        return [3 /*break*/, 3];
+                    case 2:
+                        err_1 = _a.sent();
+                        fail();
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); });
+        it("Invalid Login: username", function () { return __awaiter(void 0, void 0, void 0, function () {
+            var err_2;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, system.login("NotFoundUsnm", user.secret.password)];
+                    case 1:
+                        _a.sent();
+                        fail();
+                        return [3 /*break*/, 3];
+                    case 2:
+                        err_2 = _a.sent();
+                        expect(err_2.code).toBe(400);
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); });
+        it("Invalid Login: password", function () { return __awaiter(void 0, void 0, void 0, function () {
+            var err_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, system.login(user.secret.username, "NotFoundPass")];
+                    case 1:
+                        _a.sent();
+                        fail();
+                        return [3 /*break*/, 3];
+                    case 2:
+                        err_3 = _a.sent();
+                        expect(err_3.code).toBe(400);
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); });
+        it("Invalid Login: already logged in", function () { return __awaiter(void 0, void 0, void 0, function () {
+            var result, err_4;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, system.login(user.secret.username, user.secret.password)];
+                    case 1:
+                        result = _a.sent();
+                        expect(result.code).toBe(200);
+                        return [4 /*yield*/, system.login(user.secret.username, user.secret.password)];
+                    case 2:
+                        _a.sent();
+                        fail();
+                        return [3 /*break*/, 4];
+                    case 3:
+                        err_4 = _a.sent();
+                        expect(err_4.code).toBe(400);
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        }); });
+    });
+    describe("Logout User", function () {
+        var user;
+        beforeAll(function () { return __awaiter(void 0, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        user = {
+                            first_name: "myNameIs",
+                            last_name: "myNameIs",
+                            date_of_birth: "May 23, 1992",
+                            gender: ISystem_1.Gender.Male,
                             secret: {
-                                username: validUser1.secret.username,
-                                password: "ModifiedPass",
-                                email: "Modified@website.com"
+                                username: "myValidUser",
+                                password: "myPasswoArd",
+                                email: "myEmail@website.com"
                             }
-                        })];
-                case 2:
-                    result = _a.sent();
-                    expect(result.code).toBe(200);
-                    return [3 /*break*/, 4];
-                case 3:
-                    err_11 = _a.sent();
-                    fail();
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
-            }
+                        };
+                        return [4 /*yield*/, system.addUser(user)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+        afterAll(function () { return __awaiter(void 0, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, system.removeUser(user.secret.username)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+        it("Valid Logout", function () { return __awaiter(void 0, void 0, void 0, function () {
+            var result, err_5;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, system.logout(user.secret.username)];
+                    case 1:
+                        result = _a.sent();
+                        expect(result.code).toBe(200);
+                        return [3 /*break*/, 3];
+                    case 2:
+                        err_5 = _a.sent();
+                        console.log(err_5);
+                        fail();
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); });
+        it("Invalid Logout: usrname", function () { return __awaiter(void 0, void 0, void 0, function () {
+            var err_6;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, system.logout("NotFound")];
+                    case 1:
+                        _a.sent();
+                        fail();
+                        return [3 /*break*/, 3];
+                    case 2:
+                        err_6 = _a.sent();
+                        expect(err_6.code).toBe(400);
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); });
+    });
+    describe("Add User", function () {
+        var user;
+        beforeAll(function () {
+            user = {
+                first_name: "validUser",
+                last_name: "validUser",
+                date_of_birth: "May 23, 1992",
+                gender: ISystem_1.Gender.Male,
+                secret: {
+                    username: "validUser",
+                    password: "validUser",
+                    email: "validUser@website.com"
+                }
+            };
         });
-    }); });
-    it("Invalid Modification: Validation", function () { return __awaiter(void 0, void 0, void 0, function () {
-        var username, err_12;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    username = validUser1.secret.username;
-                    _a.label = 1;
-                case 1:
-                    _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, system.replaceUser(username, {
-                            first_name: "modifiedName",
-                            last_name: "ModifiedName",
-                            date_of_birth: "April 7, 2000",
-                            gender: ISystem_1.Gender.Female,
+        afterAll(function () { return __awaiter(void 0, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, system.removeUser(user.secret.username)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+        it("Valid Addition", function () { return __awaiter(void 0, void 0, void 0, function () {
+            var result, err_7;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, system.addUser(user)];
+                    case 1:
+                        result = _a.sent();
+                        expect(result.code).toBe(200);
+                        return [3 /*break*/, 3];
+                    case 2:
+                        err_7 = _a.sent();
+                        fail();
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); });
+        it("Invalid Addition: already-exists", function () { return __awaiter(void 0, void 0, void 0, function () {
+            var result, err_8;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, system.addUser(user)];
+                    case 1:
+                        result = _a.sent();
+                        fail();
+                        return [3 /*break*/, 3];
+                    case 2:
+                        err_8 = _a.sent();
+                        expect(err_8.code).toBe(400);
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); });
+    });
+    describe("Modify User", function () {
+        var user;
+        var existed;
+        beforeAll(function () { return __awaiter(void 0, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        user = {
+                            first_name: "myNameIs",
+                            last_name: "myNameIs",
+                            date_of_birth: "May 23, 1992",
+                            gender: ISystem_1.Gender.Male,
                             secret: {
-                                username: "ModifiedUN",
-                                password: "notvalidpass",
-                                email: "Modified@website.com"
+                                username: "myValidUser1",
+                                password: "myPassword",
+                                email: "myEmail@website.com"
                             }
-                        })];
-                case 2:
-                    _a.sent();
-                    fail();
-                    return [3 /*break*/, 4];
-                case 3:
-                    err_12 = _a.sent();
-                    //console.log(err);
-                    expect(err_12.code).toBe(402);
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
-            }
-        });
-    }); });
-    it("Invalid Modification: new username exists", function () { return __awaiter(void 0, void 0, void 0, function () {
-        var username, err_13;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    username = validUser1.secret.username;
-                    _a.label = 1;
-                case 1:
-                    _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, system.replaceUser(username, {
-                            first_name: "modifiedName",
-                            last_name: "ModifiedName",
-                            date_of_birth: "April 7, 2000",
-                            gender: ISystem_1.Gender.Female,
+                        };
+                        existed = {
+                            first_name: "myNameIs",
+                            last_name: "myNameIs",
+                            date_of_birth: "May 23, 1992",
+                            gender: ISystem_1.Gender.Male,
                             secret: {
-                                username: "myValidUser2",
-                                password: "abCabcABCASDWD",
-                                email: "Modified@website.com"
+                                username: "existedUser",
+                                password: "myPassword",
+                                email: "myEmail@website.com"
                             }
-                        })];
-                case 2:
-                    _a.sent();
-                    fail();
-                    return [3 /*break*/, 4];
-                case 3:
-                    err_13 = _a.sent();
-                    expect(err_13.code).toBe(400);
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
-            }
-        });
-    }); });
-    it("Invalid Modification: username not-exist", function () { return __awaiter(void 0, void 0, void 0, function () {
-        var username, result, err_14;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    username = "NotExistUN";
-                    _a.label = 1;
-                case 1:
-                    _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, system.replaceUser(username, {
-                            first_name: "modifiedName",
-                            last_name: "ModifiedName",
-                            date_of_birth: "April 7, 2000",
-                            gender: ISystem_1.Gender.Female,
+                        };
+                        return [4 /*yield*/, system.addUser(user)];
+                    case 1:
+                        _a.sent();
+                        return [4 /*yield*/, system.addUser(existed)];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+        afterAll(function () { return __awaiter(void 0, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, system.removeUser("ModifiedUN")];
+                    case 1:
+                        _a.sent();
+                        return [4 /*yield*/, system.removeUser(existed.secret.username)];
+                    case 2:
+                        _a.sent();
+                        return [4 /*yield*/, system.disconnectDatabase()];
+                    case 3:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+        it("Valid Modification: without new username", function () { return __awaiter(void 0, void 0, void 0, function () {
+            var username, result, err_9;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        username = user.secret.username;
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, system.replaceUser(username, {
+                                first_name: "modifiedName",
+                                last_name: "ModifiedName",
+                                date_of_birth: "April 7, 2000",
+                                gender: ISystem_1.Gender.Female,
+                                secret: {
+                                    username: user.secret.username,
+                                    password: "ModifiedPass",
+                                    email: "Modified@website.com"
+                                }
+                            })];
+                    case 2:
+                        result = _a.sent();
+                        expect(result.code).toBe(200);
+                        return [3 /*break*/, 4];
+                    case 3:
+                        err_9 = _a.sent();
+                        fail();
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        }); });
+        it("Valid Modification: with new username", function () { return __awaiter(void 0, void 0, void 0, function () {
+            var username, result, err_10;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        username = user.secret.username;
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, system.replaceUser(username, {
+                                first_name: "modifiedName",
+                                last_name: "ModifiedName",
+                                date_of_birth: "April 7, 2000",
+                                gender: ISystem_1.Gender.Female,
+                                secret: {
+                                    username: "ModifiedUN",
+                                    password: "ModifiedPass",
+                                    email: "Modified@website.com"
+                                }
+                            })];
+                    case 2:
+                        result = _a.sent();
+                        expect(result.code).toBe(200);
+                        return [3 /*break*/, 4];
+                    case 3:
+                        err_10 = _a.sent();
+                        fail();
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        }); });
+        it("Invalid Modification: new username exists", function () { return __awaiter(void 0, void 0, void 0, function () {
+            var username, err_11;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        username = user.secret.username;
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, system.replaceUser(username, {
+                                first_name: "modifiedName",
+                                last_name: "ModifiedName",
+                                date_of_birth: "April 7, 2000",
+                                gender: ISystem_1.Gender.Female,
+                                secret: {
+                                    username: "existedUser",
+                                    password: "abCabcABCASDWD",
+                                    email: "Modified@website.com"
+                                }
+                            })];
+                    case 2:
+                        _a.sent();
+                        fail();
+                        return [3 /*break*/, 4];
+                    case 3:
+                        err_11 = _a.sent();
+                        expect(err_11.code).toBe(400);
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        }); });
+        it("Invalid Modification: username not-exist", function () { return __awaiter(void 0, void 0, void 0, function () {
+            var username, result, err_12;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        username = "NotExistUN";
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, system.replaceUser(username, {
+                                first_name: "modifiedName",
+                                last_name: "ModifiedName",
+                                date_of_birth: "April 7, 2000",
+                                gender: ISystem_1.Gender.Female,
+                                secret: {
+                                    username: "ModifiedUN",
+                                    password: "ModifiedPass",
+                                    email: "Modified@website.com"
+                                }
+                            })];
+                    case 2:
+                        result = _a.sent();
+                        fail();
+                        return [3 /*break*/, 4];
+                    case 3:
+                        err_12 = _a.sent();
+                        expect(err_12.code).toBe(400);
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        }); });
+    });
+    describe("Delete User", function () {
+        var user;
+        beforeAll(function () { return __awaiter(void 0, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        user = {
+                            first_name: "myNameIs",
+                            last_name: "myNameIs",
+                            date_of_birth: "May 23, 1992",
+                            gender: ISystem_1.Gender.Male,
                             secret: {
-                                username: "ModifiedUN",
-                                password: "ModifiedPass",
-                                email: "Modified@website.com"
+                                username: "myValidUser1",
+                                password: "myPasswoArd",
+                                email: "myEmail@website.com"
                             }
-                        })];
-                case 2:
-                    result = _a.sent();
-                    fail();
-                    return [3 /*break*/, 4];
-                case 3:
-                    err_14 = _a.sent();
-                    expect(err_14.code).toBe(400);
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
-            }
-        });
-    }); });
-});
-describe("Delete User", function () {
-    var system;
-    var user;
-    beforeEach(function () { return __awaiter(void 0, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    system = System_1.default.getSystem(db);
-                    user = {
-                        first_name: "myNameIs",
-                        last_name: "myNameIs",
-                        date_of_birth: "May 23, 1992",
-                        gender: ISystem_1.Gender.Male,
-                        secret: {
-                            username: "myValidUser1",
-                            password: "myPasswoArd",
-                            email: "myEmail@website.com"
-                        }
-                    };
-                    return [4 /*yield*/, system.addUser(user)];
-                case 1:
-                    _a.sent();
-                    return [2 /*return*/];
-            }
-        });
-    }); });
-    afterEach(function () { return __awaiter(void 0, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, system.disconnectDatabase()];
-                case 1:
-                    _a.sent();
-                    return [2 /*return*/];
-            }
-        });
-    }); });
-    it("Valid Deletion", function () { return __awaiter(void 0, void 0, void 0, function () {
-        var result, err_15;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, system.removeUser(user.secret.username)];
-                case 1:
-                    result = _a.sent();
-                    expect(result.code).toBe(200);
-                    return [3 /*break*/, 3];
-                case 2:
-                    err_15 = _a.sent();
-                    fail();
-                    return [3 /*break*/, 3];
-                case 3: return [2 /*return*/];
-            }
-        });
-    }); });
-    it("Invalid Deletion: not-exist", function () { return __awaiter(void 0, void 0, void 0, function () {
-        var result, err_16;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, system.removeUser("NotExist")];
-                case 1:
-                    result = _a.sent();
-                    fail();
-                    return [3 /*break*/, 3];
-                case 2:
-                    err_16 = _a.sent();
-                    expect(err_16.code).toBe(400);
-                    return [3 /*break*/, 3];
-                case 3: return [2 /*return*/];
-            }
-        });
-    }); });
+                        };
+                        return [4 /*yield*/, system.addUser(user)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+        it("Valid Deletion", function () { return __awaiter(void 0, void 0, void 0, function () {
+            var result, err_13;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, system.removeUser(user.secret.username)];
+                    case 1:
+                        result = _a.sent();
+                        expect(result.code).toBe(200);
+                        return [3 /*break*/, 3];
+                    case 2:
+                        err_13 = _a.sent();
+                        fail();
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); });
+        it("Invalid Deletion: not-exist", function () { return __awaiter(void 0, void 0, void 0, function () {
+            var err_14;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, system.removeUser("NotExist")];
+                    case 1:
+                        _a.sent();
+                        fail();
+                        return [3 /*break*/, 3];
+                    case 2:
+                        err_14 = _a.sent();
+                        expect(err_14.code).toBe(400);
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); });
+    });
 });

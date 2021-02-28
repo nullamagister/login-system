@@ -63,7 +63,7 @@ export default class Server implements IServer{
         this.app.set('view engine', 'pug');
 
         // Views & Static files 
-        this.app.set('views', './src/view/frontend/pug')
+        this.app.set('views', './release/view/frontend/pug')
         this.app.use(express.static('./release/view/frontend', {index: false}));
     }
 

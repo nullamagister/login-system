@@ -1,0 +1,20 @@
+doctype html
+
+include helpers/_mixins.pug
+include helpers/_functions.pug
+include helpers/_variables.pug
+
+html(lang="en")
+    head 
+        +metas 
+        +css(["index.min.css"])
+        +fonts(["AkayaTelivigala-Regular.ttf"])
+        link(rel="icon", href="imgs/icon.png")
+        title Login System
+        
+    body 
+        include layout/_header.pug
+        include pages/_index.pug
+        include layout/_footer.pug
+
+        +scripts([])

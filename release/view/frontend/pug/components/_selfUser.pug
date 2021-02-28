@@ -1,0 +1,50 @@
+form#selfuser.selfUser
+    .form-group.row
+        .col
+            label(for="first_name") First name 
+        input.form-control.col(type="text", name="first_name", value=user.first_name, required, disabled, autocomplete="off")
+
+    .form-group.row
+        .col
+            label(for="first_name") Last name 
+        input.form-control.col(type="text", name="last", value=user.last_name, required, disabled, autocomplete="off")
+
+    .form-group
+        .form-check.form-check-inline
+            - if (user.gender == 'male')
+                input.form-check-input(type="radio", name="gender" value="male", required, disabled checked)
+                label.form-check-label(for="gender") Male
+                input.form-check-input(type="radio", name="gender" value="female", required, disabled)
+                label.form-check-label(for="gender") Female 
+            - else
+                input.form-check-input(type="radio", name="gender" value="male", required, disabled)
+                label.form-check-label(for="gender") Male
+                input.form-check-input(type="radio", name="gender" value="female", required, disabled checked)
+                label.form-check-label(for="gender") Female 
+
+
+    .form-group
+        label(for="date_of_birth") Date of Birth        
+        input.form-control(type="date", name="date_of_birth", value=user.date_of_birth required, disabled) 
+
+    .form-group
+        label(for="username") Username 
+        input.form-control(type="text", name="username", value=user.secret.username, required, disabled, autocomplete="off")
+
+    .form-group
+        label(for="password") Password
+        input.form-control(type="password", name="password", value=user.secret.password, required, disabled)
+        <i class="fa fa-eye-slash" aria-hidden="true"></i>
+        <i class="fa fa-eye" aria-hidden="true"></i>
+
+
+    .form-group
+        label(for="email") Email
+        input.form-control(type="email", name="email", value=user.secret.email, aria-describedby="emailHelp", required, disabled, autocomplete="off")
+        small.form-text.text-muted(id="emailHelp") We'll never share your email with anyone else. 
+
+    .form-group
+        .actions
+            input.updateBtn#update.btn.btn-success(type="submit", formaction="/update", formmethod="post", value="update")
+            input#logout.btn.btn-dark(type="submit", formaction="/logout", formmethod="get", value="logout")
+            input#delete.btn.btn-danger(type="submit", formaction="/delete", formmethod="post", value="delete")

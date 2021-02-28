@@ -23,6 +23,12 @@ function pug() {
         .pipe(connect.reload());
 }
 
+function pugRedirect() {
+    return src(fromRoot("pug/**/*.pug"))
+        .pipe(dest(toDist("pug")))
+        .pipe(connect.reload());
+}
+
 function sass() {
     return src([fromRoot("sass/*.scss"), fromRoot("css/*.css")])
         .pipe(sourcemaps.init()) 
@@ -66,12 +72,13 @@ function watchEach() {
     watch([fromRoot("webfonts/*.*"), fromRoot("webfonts/**/*.*")], fonts);
 }
 
-exports.pug   = pug;
-exports.sass  = sass;
-exports.js    = js;
-exports.imgs  = imgs;
-exports.fonts = fonts;
+exports.pug         = pug;
+exports.pugRedirect = pugRedirect
+exports.sass        = sass;
+exports.js          = js;
+exports.imgs        = imgs;
+exports.fonts       = fonts;
 
-exports.compile = parallel(pug, sass, js, imgs, fonts);
+exports.compile = parallel(series(pug, pugRedirect), sass, js, imgs, fonts);
 exports.watch   = watchEach;
-exports.default = series(parallel(pug, sass, js, imgs, fonts), watchEach);
+exports.default = series(parallel(series(pug, pugRedirect), sass, js, imgs, fonts), watchEach);

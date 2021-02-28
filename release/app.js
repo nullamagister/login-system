@@ -12,5 +12,9 @@ var App = /** @class */ (function () {
     App.prototype.stop = function () { this.server.close(); };
     return App;
 }());
-var app = new App(8080, 'localhost', 'mongodb://127.0.0.1:27017/loginSystem');
+var args = process.argv.slice(2);
+var port = args[0] ? parseInt(args[0]) : 8080;
+var host = args[1] ? args[1] : 'localhost';
+var db = args[2] ? args[2] : 'mongodb://127.0.0.1:27017/loginSystem';
+var app = new App(port, host, db);
 app.start();

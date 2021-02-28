@@ -3,367 +3,325 @@ import System from '../controller/System';
 
 const db: string = 'mongodb://127.0.0.1:27017/myTestData';
 
-describe("Login User", () => {
+describe("Login System", () => {
     let system: System;
-    let user: IUser;
-
-    beforeEach(async () => {
-        system = System.getSystem(db); 
-        user = {
-            first_name: "myNameIs",
-            last_name: "myNameIs",
-            date_of_birth: "May 23, 1992",
-            gender: Gender.Male,
-            secret: {
-                username: "myValidUser1",
-                password: "myPasswoArd",
-                email: "myEmail@website.com"
-            }
-        }
-
-        await system.addUser(user);
-    });
-
-    afterEach(async () => {
-        await system.disconnectDatabase();
-    });
-
-    it("Valid Login", async () => {
-        try {
-            const result = await system.login(user.secret.username, user.secret.password);
-            expect(result.code).toBe(200);
-        } catch (err) {
-            fail();
-        }
-    });
-
-    it("Invalid Login: username", async () => {
-        try {
-            await system.login("NotFoundUsnm", user.secret.password);
-            fail();
-        } catch (err) {
-            expect(err.code).toBe(400);
-        }
-    });
-
-    it("Invalid Login: password", async () => {
-        try {
-            await system.login(user.secret.username, "NotFoundPass");
-            fail();
-        } catch (err) {
-            expect(err.code).toBe(400);
-        }
-    });
-
-    it("Invalid Login: already logged in", async () => {
-        try {
-            const result = await system.login(user.secret.username, user.secret.password);
-            expect(result.code).toBe(200);
-            await system.login(user.secret.username, user.secret.password);
-            fail();
-        } catch (err) {
-            expect(err.code).toBe(400);
-        }
-    });
-});
-
-describe("Logout User", () => {
-    let system: System;
-    let user: IUser;
-
-    beforeEach(async () => {
-        system = System.getSystem(db); 
-        user = {
-            first_name: "myNameIs",
-            last_name: "myNameIs",
-            date_of_birth: "May 23, 1992",
-            gender: Gender.Male,
-            secret: {
-                username: "myValidUser1",
-                password: "myPasswoArd",
-                email: "myEmail@website.com"
-            }
-        }
-
-        await system.addUser(user);
-        await system.login(user.secret.username, user.secret.password);
-    });
-
-    afterEach(async () => {
-        await system.disconnectDatabase();
-    });
-    
-    it("Valid Logout", async () => {
-        try {
-            const result = await system.logout(user.secret.username);
-            expect(result.code).toBe(200);
-        } catch (err) {
-            console.log(err)
-            fail();
-        }
-    });
-
-    it("Invalid Logout: usrname", async () => {
-        try {
-            await system.logout("NotFound");
-            fail();
-        } catch (err) {
-            expect(err.code).toBe(400);
-        }
-    });
-})
-
-describe("Add User", () => {
-    let system: System;
-    let validUser: IUser;
-    let invalidUser: IUser;
 
     beforeAll(async () => {
         system = System.getSystem(db); 
-        validUser = {
-            first_name: "myNameIs",
-            last_name: "myNameIs",
-            date_of_birth: "May 23, 1992",
-            gender: Gender.Male,
-            secret: {
-                username: "myValidUser1",
-                password: "myPasswoArd",
-                email: "myEmail@website.com"
-            }
-        }
-        invalidUser = {
-            first_name: "myNameIs",
-            last_name: "myNameIs",
-            date_of_birth: "Junuary 33, 1992",
-            gender: Gender.Male,
-            secret: {
-                username: "myInValidUser1",
-                password: "myPassworWd",
-                email: "myEmail@website.com"
-            }
-        }
     });
 
     afterAll(async () => {
         await system.disconnectDatabase();
     });
+    
+    describe("Login User", () => {
+        let user: IUser;
 
-    it("Valid Addition", async () => {
-        try {
-            const result  = await system.addUser(validUser);
-            expect(result.code).toBe(200);
-        } catch(err) {
-            fail();
-        }
-        
+        beforeAll(async () => {
+            user = {
+                first_name: "myNameIs",
+                last_name: "myNameIs",
+                date_of_birth: "May 23, 1992",
+                gender: Gender.Male,
+                secret: {
+                    username: "myValidUser",
+                    password: "myPasswoArd",
+                    email: "myEmail@website.com"
+                }
+            }
+    
+            await system.addUser(user);
+        });
+
+        afterAll(async () => {
+            await system.removeUser(user.secret.username);
+        });
+
+        it("Valid Login", async () => {
+            try {
+                const result = await system.login(user.secret.username, user.secret.password);
+                expect(result.code).toBe(200);
+            } catch (err) {
+                fail();
+            }
+        });
+    
+        it("Invalid Login: username", async () => {
+            try {
+                await system.login("NotFoundUsnm", user.secret.password);
+                fail();
+            } catch (err) {
+                expect(err.code).toBe(400);
+            }
+        });
+    
+        it("Invalid Login: password", async () => {
+            try {
+                await system.login(user.secret.username, "NotFoundPass");
+                fail();
+            } catch (err) {
+                expect(err.code).toBe(400);
+            }
+        });
+    
+        it("Invalid Login: already logged in", async () => {
+            try {
+                const result = await system.login(user.secret.username, user.secret.password);
+                expect(result.code).toBe(200);
+                await system.login(user.secret.username, user.secret.password);
+                fail();
+            } catch (err) {
+                expect(err.code).toBe(400);
+            }
+        });
     });
 
-    it("Invalid Addition: Validation", async () => {
-        try {
-            const result  = await system.addUser(invalidUser);
-            fail();
-        } catch(err) {
-            expect(err.code).toBe(402);
-        }
+    describe("Logout User", () => {
+        let user: IUser;
+
+        beforeAll(async () => {
+            user = {
+                first_name: "myNameIs",
+                last_name: "myNameIs",
+                date_of_birth: "May 23, 1992",
+                gender: Gender.Male,
+                secret: {
+                    username: "myValidUser",
+                    password: "myPasswoArd",
+                    email: "myEmail@website.com"
+                }
+            }
+    
+            await system.addUser(user);
+    
+        });
+
+        afterAll(async () => {
+            await system.removeUser(user.secret.username);
+        });
+
+        it("Valid Logout", async () => {
+            try {
+                const result = await system.logout(user.secret.username);
+                expect(result.code).toBe(200);
+            } catch (err) {
+                console.log(err)
+                fail();
+            }
+        });
+    
+        it("Invalid Logout: usrname", async () => {
+            try {
+                await system.logout("NotFound");
+                fail();
+            } catch (err) {
+                expect(err.code).toBe(400);
+            }
+        });
     });
 
-    it("Invalid Addition: already-exists", async () => {
-        try {
-            const result  = await system.addUser(validUser);
-            fail();
-        } catch(err) {
-            expect(err.code).toBe(400);
-        }
+    describe("Add User", () => {
+        let user: IUser;
+
+        beforeAll(() => {
+            user = {
+                first_name: "validUser",
+                last_name: "validUser",
+                date_of_birth: "May 23, 1992",
+                gender: Gender.Male,
+                secret: {
+                    username: "validUser",
+                    password: "validUser",
+                    email: "validUser@website.com"
+                }
+            }
+        });
+
+        afterAll(async () => {
+            await system.removeUser(user.secret.username);
+        });
+
+        it("Valid Addition", async () => {
+            try {
+                const result  = await system.addUser(user);
+                expect(result.code).toBe(200);
+            } catch(err) {
+                fail();
+            }
+            
+        });
+    
+        it("Invalid Addition: already-exists", async () => {
+            try {
+                const result  = await system.addUser(user);
+                fail();
+            } catch(err) {
+                expect(err.code).toBe(400);
+            }
+        });
+    });
+
+    describe("Modify User", () => {
+        let user: IUser;
+        let existed: IUser;
+    
+        beforeAll(async () => {
+            user = {
+                first_name: "myNameIs",
+                last_name: "myNameIs",
+                date_of_birth: "May 23, 1992",
+                gender: Gender.Male,
+                secret: {
+                    username: "myValidUser1",
+                    password: "myPassword",
+                    email: "myEmail@website.com"
+                }
+            };
+
+            existed = {
+                first_name: "myNameIs",
+                last_name: "myNameIs",
+                date_of_birth: "May 23, 1992",
+                gender: Gender.Male,
+                secret: {
+                    username: "existedUser",
+                    password: "myPassword",
+                    email: "myEmail@website.com"
+                }
+            };
+    
+            await system.addUser(user);
+            await system.addUser(existed);
+        });
+    
+        afterAll(async () => {
+            await system.removeUser("ModifiedUN");
+            await system.removeUser(existed.secret.username);
+            await system.disconnectDatabase();
+        });
+    
+        it("Valid Modification: without new username", async () => {
+            const username = user.secret.username;
+    
+            try {
+                const result = await system.replaceUser(username, {
+                    first_name: "modifiedName",
+                    last_name: "ModifiedName",
+                    date_of_birth: "April 7, 2000",
+                    gender: Gender.Female,
+                    secret: {
+                        username: user.secret.username,
+                        password: "ModifiedPass",
+                        email: "Modified@website.com"
+                    }
+                }); 
+                expect(result.code).toBe(200);
+            } catch (err) {
+                fail();
+            }
+        });
+
+        it("Valid Modification: with new username", async () => {
+            const username = user.secret.username;
+    
+            try {
+                const result = await system.replaceUser(username, {
+                    first_name: "modifiedName",
+                    last_name: "ModifiedName",
+                    date_of_birth: "April 7, 2000",
+                    gender: Gender.Female,
+                    secret: {
+                        username: "ModifiedUN",
+                        password: "ModifiedPass",
+                        email: "Modified@website.com"
+                    }
+                }); 
+                expect(result.code).toBe(200);
+            } catch (err) {
+                fail();
+            }
+        });
+    
+        it("Invalid Modification: new username exists", async () => {
+            const username = user.secret.username;
+    
+            try {
+                await system.replaceUser(username, {
+                    first_name: "modifiedName",
+                    last_name: "ModifiedName",
+                    date_of_birth: "April 7, 2000",
+                    gender: Gender.Female,
+                    secret: {
+                        username: "existedUser",
+                        password: "abCabcABCASDWD",
+                        email: "Modified@website.com"
+                    }
+                }); 
+                fail();
+            } catch (err) {
+                expect(err.code).toBe(400);
+            }
+        });
+    
+    
+        it("Invalid Modification: username not-exist", async () => {
+            const username = "NotExistUN";
+    
+            try {
+                const result = await system.replaceUser(username, {
+                    first_name: "modifiedName",
+                    last_name: "ModifiedName",
+                    date_of_birth: "April 7, 2000",
+                    gender: Gender.Female,
+                    secret: {
+                        username: "ModifiedUN",
+                        password: "ModifiedPass",
+                        email: "Modified@website.com"
+                    }
+                }); 
+                fail();
+            } catch (err) {
+                expect(err.code).toBe(400);
+            }
+        });
+    });
+
+    describe("Delete User", () => {
+        let user: IUser;
+    
+        beforeAll(async () => {
+            user = {
+                first_name: "myNameIs",
+                last_name: "myNameIs",
+                date_of_birth: "May 23, 1992",
+                gender: Gender.Male,
+                secret: {
+                    username: "myValidUser1",
+                    password: "myPasswoArd",
+                    email: "myEmail@website.com"
+                }
+            }
+    
+            await system.addUser(user);
+        });
+    
+        it("Valid Deletion", async () => {
+            try {
+                const result = await system.removeUser(user.secret.username);
+                expect(result.code).toBe(200);
+            } catch (err ){
+                fail()
+            }
+        });
+    
+        it("Invalid Deletion: not-exist", async () => {
+            try {
+                await system.removeUser("NotExist");
+                fail()
+            } catch (err){
+                expect(err.code).toBe(400);
+            }
+        });
     });
 });
 
-describe("Modify User", () => {
-    let system: System;
-    let validUser1: IUser;
-    let validUser2: IUser;
-
-    beforeEach(async () => {
-        system = System.getSystem(db); 
-        validUser1 = {
-            first_name: "myNameIs",
-            last_name: "myNameIs",
-            date_of_birth: "May 23, 1992",
-            gender: Gender.Male,
-            secret: {
-                username: "myValidUser1",
-                password: "myPassword",
-                email: "myEmail@website.com"
-            }
-        }
-        validUser2 = {
-            first_name: "myNameIs",
-            last_name: "myNameIs",
-            date_of_birth: "January 28, 1992",
-            gender: Gender.Male,
-            secret: {
-                username: "myValidUser2",
-                password: "myPassword",
-                email: "myEmail@website.com"
-            }
-        }
-
-        await system.addUser(validUser1);
-        await system.addUser(validUser2);
-    });
-
-    afterEach(async () => {
-        await system.disconnectDatabase();
-    });
-
-    it("Valid Modification: with new username", async () => {
-        const username = validUser1.secret.username;
-
-        try {
-            const result = await system.replaceUser(username, {
-                first_name: "modifiedName",
-                last_name: "ModifiedName",
-                date_of_birth: "April 7, 2000",
-                gender: Gender.Female,
-                secret: {
-                    username: "ModifiedUN",
-                    password: "ModifiedPass",
-                    email: "Modified@website.com"
-                }
-            }); 
-            expect(result.code).toBe(200);
-        } catch (err) {
-            fail();
-        }
-    });
-
-    it("Valid Modification: without new username", async () => {
-        const username = validUser1.secret.username;
-
-        try {
-            const result = await system.replaceUser(username, {
-                first_name: "modifiedName",
-                last_name: "ModifiedName",
-                date_of_birth: "April 7, 2000",
-                gender: Gender.Female,
-                secret: {
-                    username: validUser1.secret.username,
-                    password: "ModifiedPass",
-                    email: "Modified@website.com"
-                }
-            }); 
-            expect(result.code).toBe(200);
-        } catch (err) {
-            fail();
-        }
-    });
-
-
-    it("Invalid Modification: Validation", async () => {
-        const username = validUser1.secret.username;
-
-        try {
-             await system.replaceUser(username, {
-                first_name: "modifiedName",
-                last_name: "ModifiedName",
-                date_of_birth: "April 7, 2000",
-                gender: Gender.Female,
-                secret: {
-                    username: "ModifiedUN",
-                    password: "notvalidpass",
-                    email: "Modified@website.com"
-                }
-            }); 
-            fail();
-        } catch (err) {
-            //console.log(err);
-            expect(err.code).toBe(402);
-        }
-    });
-
-    it("Invalid Modification: new username exists", async () => {
-        const username = validUser1.secret.username;
-
-        try {
-            await system.replaceUser(username, {
-                first_name: "modifiedName",
-                last_name: "ModifiedName",
-                date_of_birth: "April 7, 2000",
-                gender: Gender.Female,
-                secret: {
-                    username: "myValidUser2",
-                    password: "abCabcABCASDWD",
-                    email: "Modified@website.com"
-                }
-            }); 
-            fail();
-        } catch (err) {
-            expect(err.code).toBe(400);
-        }
-    });
-
-
-    it("Invalid Modification: username not-exist", async () => {
-        const username = "NotExistUN";
-
-        try {
-            const result = await system.replaceUser(username, {
-                first_name: "modifiedName",
-                last_name: "ModifiedName",
-                date_of_birth: "April 7, 2000",
-                gender: Gender.Female,
-                secret: {
-                    username: "ModifiedUN",
-                    password: "ModifiedPass",
-                    email: "Modified@website.com"
-                }
-            }); 
-            fail();
-        } catch (err) {
-            expect(err.code).toBe(400);
-        }
-    });
-});
-
-describe("Delete User", () => {
-    let system: System;
-    let user: IUser;
-
-    beforeEach(async () => {
-        system = System.getSystem(db); 
-        user = {
-            first_name: "myNameIs",
-            last_name: "myNameIs",
-            date_of_birth: "May 23, 1992",
-            gender: Gender.Male,
-            secret: {
-                username: "myValidUser1",
-                password: "myPasswoArd",
-                email: "myEmail@website.com"
-            }
-        }
-
-        await system.addUser(user);
-    });
-
-    afterEach(async () => {
-        await system.disconnectDatabase();
-    })
-
-    it("Valid Deletion", async () => {
-        try {
-            const result = await system.removeUser(user.secret.username);
-            expect(result.code).toBe(200);
-        } catch (err ){
-            fail()
-        }
-    });
-
-    it("Invalid Deletion: not-exist", async () => {
-        try {
-            const result = await system.removeUser("NotExist");
-            fail()
-        } catch (err){
-            expect(err.code).toBe(400);
-        }
-    });
-});
