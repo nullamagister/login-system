@@ -79,6 +79,6 @@ exports.js          = js;
 exports.imgs        = imgs;
 exports.fonts       = fonts;
 
-exports.compile = parallel(series(pug, pugRedirect), sass, js, imgs, fonts);
+exports.compile = parallel(pugRedirect, sass, js, imgs, fonts);
 exports.watch   = watchEach;
 exports.default = series(parallel(series(pug, pugRedirect), sass, js, imgs, fonts), watchEach);
