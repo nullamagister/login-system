@@ -5,7 +5,6 @@
   "main": "release/app.js",
   "scripts": {
     "build": "tsc",
-    "start": "gulp compile && tsc && node release/app.js",
     "serve": "gulp compile && tsc && node release/app.js",
     "test": "jest ./src/test",
     "coverage": "jest --coverage ./src/test",
